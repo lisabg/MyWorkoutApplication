@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.example.myapplication.MainActivity">
+
+
+    <item android:id="@+id/action_dashboard_button"
+          android:icon="@drawable/ic_menu_icon"
+          android:title="@string/view_dashboard_button_text"
+          app:showAsAction="ifRoom" />
+
+
+    <!--<item android:id="@+id/dashboard"
+          android:title="@string/view_dashboard_button_text"
+          app:showAsAction="never" />
+
+    <item android:id="@+id/item3"
+          android:title="@string/view_converter_button_text"
+          app:showAsAction="never">
+        <menu>
+            <item android:id="@+id/subitem1"
+                  android:title="Metric" />
+            <item android:id="@+id/subitem2"
+                  android:title="Imperial" />
+        </menu>
+    </item>-->
+</menu>

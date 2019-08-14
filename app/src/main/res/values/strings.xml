@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">My Workout Application</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_share">Share</string>
+    <string name="action_exit">Exit</string>
+
+    <string name="application_name">My Workout Planner</string>
+    <string name="workout_clipart_description">Three people working out</string>
+    <string name="view_menu_menu_button_text">Main Menu</string>
+    <string name="view_dashboard_button_text">Dashboard</string>
+    <string name="view_converter_button_text">Converter</string>
+    <string name="dashboard_exercise_button_description">Person exercising</string>
+    <string name="dashboard_stretching_button_description">Person stretching</string>
+    <string name="dashboard_converter_button_description">Symbols depicting conversion of units</string>
+
+    <string name="converter_text_input_hint">1&#8211;999</string>
+    <string name="converter_instructions">Type quantity to convert</string>
+    <string name="converter_convert_button">Convert</string>
+    <string name="converter_from_type">From:</string>
+    <string name="converter_to_type">To:</string>
+    <string name="converter_result">Result:</string>
+    <string-array name="converter_options">
+        <item>kg</item>
+        <item>g</item>
+        <item>lb</item>
+        <item>oz</item>
+    </string-array>
+
+
+</resources>
