@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.*
 import kotlinx.android.synthetic.main.activity_converter.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import kotlin.math.roundToInt
 
-class ConverterActivity : AppCompatActivity() {
+class ConverterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,21 +24,21 @@ class ConverterActivity : AppCompatActivity() {
         converter_spinner_from.adapter = adapter
         converter_spinner_to.adapter = adapter
 
-/*
-        // action on Spinner selections
-        converter_spinner_from.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-            }
-        }
-*/
+        converter_spinner_from.onItemSelectedListener = this
+        converter_spinner_to.onItemSelectedListener = this
+
 
         //listen to 'Convert' button and convert number according to EditText and Spinners selected and apply to
         // TextView
         convert_button.setOnClickListener {
-            val convertedNum = convertNumber(converter_input_number.text.toString())
-            converter_result_content_id.text = convertedNum
+            val inputNum = converter_input_number.text.toString()
+
+            if (inputNum.isBlank()) {
+                Toast.makeText(this, "Please enter a number", android.widget.Toast.LENGTH_SHORT).show()
+            } else {
+                val convertedNum = formatNum(inputNum)
+                converter_result_content_id.text = convertedNum
+            }
         }
     }
 
@@ -44,7 +47,6 @@ class ConverterActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
@@ -59,107 +61,79 @@ class ConverterActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        val text = p0!!.getItemAtPosition(p2).toString()
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
+
+
+    private fun formatNum(inputNum : String) : String {
+        val convertedNum = convertNumber(inputNum)
+        val df = DecimalFormat("######.00")
+        df.roundingMode = RoundingMode.CEILING
+        return df.format(convertedNum).toString()
+    }
+
+
     //TODO("not implemented") //Add more converting functionality
 
 
-    // kg to pounds
-    private fun convertNumber(number: String) : String {
-        val from = converter_spinner_from.selectedItem.toString()
+    private fun convertNumber(number: String): Double {
+        val num = number.toDoubleOrNull()
+        if (num !== null) {
+            return when (converter_spinner_from.selectedItem.toString()) {
+                "kg" -> convertFromKg(num)
+                "g" -> convertFromG(num)
+                "lb" -> convertFromLb(num)
+                "oz" -> convertFromOz(num)
+                else -> 0.0
+            }
 
-        return when(from) {
-            "kg" -> convertFromKg(number.toDoubleOrNull())
-            "g" -> convertFromG(number.toDoubleOrNull())
-            "lb" -> convertFromLb(number.toDoubleOrNull())
-            "oz" -> convertFromOz(number.toDoubleOrNull())
-            else -> ""
+        }
+        return 0.0
+    }
+
+    private fun convertFromKg(num: Double): Double {
+        return when (converter_spinner_to.selectedItem.toString()) {
+            "kg" -> num
+            "g" -> num * 1000
+            "lb" -> num / 0.45359237
+            "oz" -> num / 0.02834952
+            else -> 0.0
         }
     }
 
-    private fun convertFromKg(num: Double?) : String {
-        if (num !== null) {
-
-            when (converter_spinner_to.selectedItem.toString()) {
-                "kg" -> return num.toString()
-
-                "g" -> {
-                    val convertedNum = num * 1000
-                    return convertedNum.toInt().toString() }
-
-                "lb" -> {
-                    val convertedNum = num / 0.45359237
-                    return convertedNum.toInt().toString() }
-
-                "oz" -> {
-                    val convertedNum = num / 0.02834952
-                    return convertedNum.toInt().toString() }
-            }
+    private fun convertFromG(num: Double): Double {
+        return when (converter_spinner_to.selectedItem.toString()) {
+            "kg" -> num / 1000
+            "g" -> num
+            "lb" -> num * 2.2046226218
+            "oz" -> num / 453.59237
+            else -> 0.0
         }
-        return "0"
     }
 
-    private fun convertFromG(num : Double?) : String {
-        if (num !== null) {
-
-            when (converter_spinner_to.selectedItem.toString()) {
-                "kg" -> {
-                    val convertedNum = num / 1000
-                    return convertedNum.toInt().toString() }
-
-                "g" -> return num.toString()
-
-                "lb" -> {
-                    val convertedNum = num * 2.2046226218
-                    return convertedNum.toInt().toString() }
-
-                "oz" -> {
-                    val convertedNum = num / 453.59237
-                    return convertedNum.toInt().toString() }
-            }
+    private fun convertFromLb(num: Double): Double {
+        return when (converter_spinner_to.selectedItem.toString()) {
+            "kg" -> num * 0.45359237
+            "g" -> num * 453.59237
+            "lb" -> num
+            "oz" -> num * 16
+            else -> 0.0
         }
-        return "0"
     }
 
-    private fun convertFromLb(num: Double?): String {
-        if (num !== null) {
-
-            when (converter_spinner_to.selectedItem.toString()) {
-                "kg" -> {
-                    val convertedNum = num * 0.45359237
-                    return convertedNum.toInt().toString() }
-
-                "g" -> {
-                    val convertedNum = num * 453.59237
-                    return convertedNum.toInt().toString() }
-
-                "lb" -> return num.toString()
-
-                "oz" -> {
-                    val convertedNum = num * 16
-                    return convertedNum.toInt().toString() }
-            }
+    private fun convertFromOz(num: Double): Double {
+        return when (converter_spinner_to.selectedItem.toString()) {
+            "kg" -> num * 0.02834952
+            "g" -> num * 28.34952
+            "lb" -> num / 16
+            "oz" -> num
+            else -> 0.0
         }
-        return "0"
-    }
-
-    private fun convertFromOz(num: Double?) : String {
-        if (num !== null) {
-
-            when (converter_spinner_to.selectedItem.toString()) {
-                "kg" -> {
-                    val convertedNum = num * 0.02834952
-                    return convertedNum.toInt().toString() }
-
-                "g" -> {
-                    val convertedNum = num * 28.34952
-                    return convertedNum.toInt().toString() }
-
-                "lb" -> {
-                    val convertedNum = num / 16
-                    return convertedNum.toInt().toString() }
-
-                "oz" -> return num.toString()
-            }
-        }
-        return "0"
     }
 }

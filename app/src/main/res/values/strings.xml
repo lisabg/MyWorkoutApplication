@@ -13,7 +13,7 @@
     <string name="dashboard_stretching_button_description">Person stretching</string>
     <string name="dashboard_converter_button_description">Symbols depicting conversion of units</string>
 
-    <string name="converter_text_input_hint">1&#8211;999</string>
+    <string name="converter_text_input_hint">1&#8211;999 999</string>
     <string name="converter_instructions">Type quantity to convert</string>
     <string name="converter_convert_button">Convert</string>
     <string name="converter_from_type">From:</string>
