@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.converter
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,10 +7,11 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import com.example.myapplication.DashboardActivity
+import com.example.myapplication.R
 import kotlinx.android.synthetic.main.activity_converter.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import kotlin.math.roundToInt
 
 class ConverterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
@@ -100,7 +101,7 @@ class ConverterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
     private fun convertFromKg(num: Double): Double {
         return when (converter_spinner_to.selectedItem.toString()) {
             "kg" -> num
-            "g" -> num * 1000
+            "g" -> num / 1000
             "lb" -> num / 0.45359237
             "oz" -> num / 0.02834952
             else -> 0.0
@@ -109,7 +110,7 @@ class ConverterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
 
     private fun convertFromG(num: Double): Double {
         return when (converter_spinner_to.selectedItem.toString()) {
-            "kg" -> num / 1000
+            "kg" -> num * 1000
             "g" -> num
             "lb" -> num * 2.2046226218
             "oz" -> num / 453.59237

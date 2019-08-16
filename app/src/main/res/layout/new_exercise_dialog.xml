@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="20dp">
+
+    <EditText
+            android:id="@+id/new_exercise_title_input"
+            android:hint="@string/exercise_title_hint"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    />
+
+    <EditText
+            android:id="@+id/new_exercise_description_input"
+            android:hint="@string/exercise_description_hint"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    />
+
+    <EditText
+            android:id="@+id/new_exercise_repetition_input"
+            android:hint="@string/exercise_repetition_hint"
+            android:inputType="number"
+            android:maxLength="4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    />
+
+    <EditText
+            android:id="@+id/new_exercise_sets_input"
+            android:hint="@string/exercise_sets_hint"
+            android:inputType="number"
+            android:maxLength="4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    />
+
+    <LinearLayout
+            android:gravity="right"
+            android:paddingTop="7dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <Button
+                android:id="@+id/add_exercise_cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/exercise_dialog_cancel_button_title"
+        />
+
+        <Button
+                android:id="@+id/add_exercise_submit_button"
+                style="@style/Base.Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/exercise_dialog_add_button_title"
+        />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

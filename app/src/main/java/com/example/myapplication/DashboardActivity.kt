@@ -3,9 +3,11 @@ package com.example.myapplication
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Window
-import android.view.WindowManager
-import android.widget.ImageButton
+import com.example.myapplication.converter.ConverterActivity
+import com.example.myapplication.exercise.ExerciseActivity
+import com.example.myapplication.stretching.StretchingActivity
+import kotlinx.android.synthetic.main.activity_dashboard.*
+
 
 class DashboardActivity : AppCompatActivity() {
 
@@ -13,20 +15,15 @@ class DashboardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_dashboard)
 
-
-
-        val goToExercisesBtn = findViewById<ImageButton>(R.id.dashboard_exercises_button)
-        goToExercisesBtn.setOnClickListener {
+        dashboard_exercises_button.setOnClickListener {
             startActivity(Intent(this@DashboardActivity, ExerciseActivity::class.java))
         }
 
-        val goToStretchingBtn = findViewById<ImageButton>(R.id.dashboard_stretching_button)
-        goToStretchingBtn.setOnClickListener {
+        dashboard_stretching_button.setOnClickListener {
             startActivity(Intent(this@DashboardActivity, StretchingActivity::class.java))
         }
 
-        val goToConverterBtn = findViewById<ImageButton>(R.id.dashboard_converter_button)
-        goToConverterBtn.setOnClickListener {
+        dashboard_converter_button.setOnClickListener {
             startActivity(Intent(this@DashboardActivity, ConverterActivity::class.java))
         }
     }
