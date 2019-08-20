@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.*
 import com.example.myapplication.DashboardActivity
 import com.example.myapplication.R
-import kotlinx.android.synthetic.main.activity_converter.*
+import kotlinx.android.synthetic.main.converter_layout.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -17,7 +17,7 @@ class ConverterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_converter)
+        setContentView(R.layout.converter_layout)
 
         val myArray = resources.getStringArray(R.array.converter_options)
         val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myArray)
@@ -35,7 +35,7 @@ class ConverterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
             val inputNum = converter_input_number.text.toString()
 
             if (inputNum.isBlank()) {
-                Toast.makeText(this, "Please enter a number", android.widget.Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please enter a number", Toast.LENGTH_SHORT).show()
             } else {
                 val convertedNum = formatNum(inputNum)
                 converter_result_content_id.text = convertedNum

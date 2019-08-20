@@ -8,13 +8,13 @@
         tools:context=".exercise.ExerciseActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_exercises"
+            android:id="@+id/recycler_view_stretches"
             android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_exercise_button"
+            android:id="@+id/add_stretch_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
@@ -23,5 +23,6 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent" app:fabSize="auto"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

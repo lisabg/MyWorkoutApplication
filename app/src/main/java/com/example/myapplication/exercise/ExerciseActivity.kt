@@ -1,63 +1,79 @@
 package com.example.myapplication.exercise
 
 import android.content.Intent
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.AdaptiveIconDrawable
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.DashboardActivity
+import com.example.myapplication.DataBaseHandler
 import com.example.myapplication.R
-import kotlinx.android.synthetic.main.activity_exercise.*
-import kotlinx.android.synthetic.main.new_exercise_dialog.view.*
+import kotlinx.android.synthetic.main.exercise_main_layout.*
+import kotlinx.android.synthetic.main.exercise_new_dialog.view.*
+import java.text.FieldPosition
 
 class ExerciseActivity : AppCompatActivity() {
 
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var deleteIcon: Drawable
+    private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_exercise)
+        setContentView(R.layout.exercise_main_layout)
 
+        val db = DataBaseHandler(this)
+        val myPermData = ArrayList<Exercise>()
+        deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_black_24dp)!!
 
-        val myData = ArrayList<Exercise>()
-
-        myData.add(
+        myPermData.add(
             Exercise(
-                "Plank", "Place the palm of your hands on the floor centering your hands straight " +
+                0, "Plank", "Place the palm of your hands on the floor centering your hands straight " +
                         "under your shoulders, place your feet so that your body is parallell to the ground and you " +
                         "are standing on your toes.", 30, 3
             )
         )
-        myData.add(
+        myPermData.add(
             Exercise(
-                "Push-ups", "Start in a plank-position with your hands in a wider stans" +
+                0, "Push-ups", "Start in a plank-position with your hands in a wider stans" +
                         "than your shoulders. Lower yourself as far as possible and then push back up.",
                 10, 3
             )
         )
 
+        val data = db.readExerciseData()
+        for (i in 0 until (data.size)) {
+            myPermData.add(data[i])
+        }
 
+        viewAdapter = ExerciseAdapter(myPermData)
         viewManager = LinearLayoutManager(this)
 
         findViewById<RecyclerView>(R.id.recycler_view_exercises).apply {
-            // use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
+            // use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
             setHasFixedSize(true)
 
-            // use a linear layout manager
             layoutManager = viewManager
-            // specify an viewAdapter (see also next example)
-            adapter = ExerciseAdapter(myData)
+            adapter = viewAdapter
         }
 
-
+        //add exercise pop-up
         add_exercise_button.setOnClickListener {
             //inflate the dialog with custom view
-            val mExerciseDialogView = LayoutInflater.from(this).inflate(R.layout.new_exercise_dialog, null)
+            val mExerciseDialogView = LayoutInflater.from(this).inflate(R.layout.exercise_new_dialog, null)
 
             //AlertDialogBuilder
             val mBuilder = AlertDialog.Builder(this)
@@ -65,35 +81,116 @@ class ExerciseActivity : AppCompatActivity() {
                 .setTitle(R.string.exercise_dialog_box_title)
             val mAlertDialog = mBuilder.show()
 
-            mExerciseDialogView.add_exercise_submit_button.setOnClickListener{
-                mAlertDialog.dismiss()
+            mExerciseDialogView.add_exercise_submit_button.setOnClickListener {
+                if (!mExerciseDialogView.new_exercise_title_input.text.isBlank() &&
+                    !mExerciseDialogView.new_exercise_description_input.text.isBlank() &&
+                    !mExerciseDialogView.new_exercise_repetition_input.text.isBlank() &&
+                    !mExerciseDialogView.new_exercise_sets_input.text.isBlank()
+                ) {
 
-                val title = mExerciseDialogView.new_exercise_title_input.text.toString()
-                val description = mExerciseDialogView.new_exercise_description_input.text.toString()
-                val repetitions = mExerciseDialogView.new_exercise_repetition_input.text.toString()
-                val sets = mExerciseDialogView.new_exercise_sets_input.text.toString()
+                    mAlertDialog.dismiss()
 
-                //add input to data array for display
-                myData.add(
-                    Exercise(
-                        title,
-                        description,
-                        repetitions.toLong(),
-                        sets.toLong()
-                    )
-                )
+                    val title = mExerciseDialogView.new_exercise_title_input.text.toString()
+                    val description = mExerciseDialogView.new_exercise_description_input.text.toString()
+                    val repetitions = mExerciseDialogView.new_exercise_repetition_input.text.toString()
+                    val sets = mExerciseDialogView.new_exercise_sets_input.text.toString()
 
-                //update display
-                findViewById<RecyclerView>(R.id.recycler_view_exercises).apply {
-                    adapter = ExerciseAdapter(myData)
-                }
+                    //add input to data array for display
+                    val exercise = Exercise(0, title, description, repetitions.toLong(), sets.toLong())
+
+                    db.insertExerciseData(exercise)
+                    updateViewData(db, myPermData)
+
+                    Toast.makeText(this, "Exercise added", Toast.LENGTH_SHORT).show()
+
+                } else Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
             }
 
-            mExerciseDialogView.add_exercise_cancel_button.setOnClickListener{
+            mExerciseDialogView.add_exercise_cancel_button.setOnClickListener {
                 mAlertDialog.dismiss()
             }
         }
+
+
+
+        //Swipe functionality
+        val itemTouchHelperCallBack = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
+                val exerciseName = (viewAdapter as ExerciseAdapter).removeExerciseItem(viewHolder, db)
+                db.deleteExerciseData(exerciseName)
+            }
+
+
+            //ICON NOT BEING DRAWN CORRECTLY
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+                val iconMargin = (itemView.height - deleteIcon.intrinsicHeight) / 2
+
+                if (dX > 0) {
+                    swipeBackground.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                    deleteIcon.setBounds(
+                        itemView.left + iconMargin,
+                        itemView.top + iconMargin,
+                        itemView.right + iconMargin + deleteIcon.intrinsicWidth,
+                        itemView.bottom - iconMargin)
+                }
+
+                swipeBackground.draw(c)
+                c.save()
+
+                if (dX > 0) c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                deleteIcon.draw(c)
+                c.restore()
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            }
+        }
+
+
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallBack)
+        itemTouchHelper.attachToRecyclerView(recycler_view_exercises)
+
+
+
+
     }
+
+    private fun updateViewData(db: DataBaseHandler, myPermData : ArrayList<Exercise>) {
+        val data = db.readExerciseData()
+        var added = 0
+
+        for (i in 0 until (data.size)) {
+            var duplicates = 0
+            for (j in 0 until (myPermData.size-1)) {
+                if (data[i].name == myPermData[j].name) {
+                    duplicates++
+                }
+            }
+            if (duplicates == 0) {
+                myPermData.add(data[i])
+                added++
+            }
+        }
+        //update display
+        findViewById<RecyclerView>(R.id.recycler_view_exercises).apply {
+            adapter = ExerciseAdapter(myPermData)
+        }
+
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

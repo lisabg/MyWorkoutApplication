@@ -6,24 +6,24 @@
               android:padding="20dp">
 
     <EditText
-            android:id="@+id/new_exercise_title_input"
-            android:hint="@string/exercise_title_hint"
+            android:id="@+id/new_stretch_title_input"
+            android:hint="@string/stretch_title_hint"
             android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
     />
 
     <EditText
-            android:id="@+id/new_exercise_description_input"
-            android:hint="@string/exercise_description_hint"
+            android:id="@+id/new_stretch_description_input"
+            android:hint="@string/stretch_description_hint"
             android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
     />
 
     <EditText
-            android:id="@+id/new_exercise_repetition_input"
-            android:hint="@string/exercise_repetition_hint"
+            android:id="@+id/new_stretch_time_input"
+            android:hint="@string/stretch_time_hint"
             android:inputType="number"
             android:maxLength="4"
             android:layout_width="match_parent"
@@ -31,8 +31,8 @@
     />
 
     <EditText
-            android:id="@+id/new_exercise_sets_input"
-            android:hint="@string/exercise_sets_hint"
+            android:id="@+id/new_stretch_sets_input"
+            android:hint="@string/stretch_sets_hint"
             android:inputType="number"
             android:maxLength="4"
             android:layout_width="match_parent"
@@ -40,28 +40,25 @@
     />
 
     <LinearLayout
-            android:gravity="right"
+            android:gravity="end"
             android:paddingTop="7dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
         <Button
-                android:id="@+id/add_exercise_cancel_button"
+                android:id="@+id/add_stretch_cancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/exercise_dialog_cancel_button_title"
+                android:text="@string/dialog_cancel_button_title"
         />
 
         <Button
-                android:id="@+id/add_exercise_submit_button"
+                android:id="@+id/add_stretch_submit_button"
                 style="@style/Base.Widget.AppCompat.Button.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/exercise_dialog_add_button_title"
+                android:text="@string/dialog_add_button_title"
         />
 
     </LinearLayout>
-
-
-
 </LinearLayout>
