@@ -36,7 +36,7 @@ class StretchAdapter(private val stretchList: ArrayList<Stretch>) :
         // - replace the contents of the view with that element
         val stretch: Stretch = stretchList[position]
 
-        val time = "Seconds: " + stretch.time
+        val time = "Seconds: " + stretch.seconds
         val sets = "Sets: " + stretch.sets
 
         holder.stretchName.text = stretch.name

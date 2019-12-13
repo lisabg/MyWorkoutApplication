@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.DashboardActivity
+import com.example.myapplication.DataBaseHandler
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.stretch_main_layout.*
 import kotlinx.android.synthetic.main.stretch_new_dialog.*
@@ -20,12 +21,14 @@ import kotlinx.android.synthetic.main.stretch_new_dialog.view.*
 class StretchActivity : AppCompatActivity() {
 
     private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.stretch_main_layout)
 
-
+        val db = DataBaseHandler(this)
         val myData = ArrayList<Stretch>()
 
         myData.add(
@@ -33,17 +36,20 @@ class StretchActivity : AppCompatActivity() {
                 0, "Downward facing dog", "Place the palm of your hands on the floor centering your hands straight " +
                         "under your shoulders, place your feet flat on the ground. Try to straighten both your elbows and knees" +
                         "pushing your bottom towards the sky.", 30, 3
-            )
-        )
+            ))
         myData.add(
             Stretch(
                 0 , "Shoulder stretch", "Stretch and point one arm straight up towards the sky, then bend " +
                         "the elbow and reach your hand down towards your back. Your other hand may help push your bent" +
                         "elbow backwards.", 10, 3
-            )
-        )
+            ))
 
+        val data = db.readStretchData()
+        for (i in 0 until (data.size)) {
+            myData.add(data[i])
+        }
 
+        viewAdapter = StretchAdapter(myData)
         viewManager = LinearLayoutManager(this)
 
         findViewById<RecyclerView>(R.id.recycler_view_stretches).apply {
@@ -69,7 +75,6 @@ class StretchActivity : AppCompatActivity() {
             val mAlertDialog = mBuilder.show()
 
             mStretchDialogView.add_stretch_submit_button.setOnClickListener{
-
                 if (!mStretchDialogView.new_stretch_title_input.text.isBlank() &&
                     !mStretchDialogView.new_stretch_description_input.text.isBlank() &&
                     !mStretchDialogView.new_stretch_time_input.text.isBlank() &&
@@ -79,24 +84,22 @@ class StretchActivity : AppCompatActivity() {
 
                     val title = mStretchDialogView.new_stretch_title_input.text.toString()
                     val description = mStretchDialogView.new_stretch_description_input.text.toString()
-                    val time = mStretchDialogView.new_stretch_time_input.text.toString()
+                    val seconds = mStretchDialogView.new_stretch_time_input.text.toString()
                     val sets = mStretchDialogView.new_stretch_sets_input.text.toString()
 
                     //add input to data array for display
-                    myData.add(
-                        Stretch(
+                    val stretch = Stretch(
                             0,
                             title,
                             description,
-                            time.toLong(),
-                            sets.toLong()
-                        )
-                    )
+                            seconds.toLong(),
+                            sets.toLong())
 
-                    //update display
-                    findViewById<RecyclerView>(R.id.recycler_view_stretches).apply {
-                        adapter = StretchAdapter(myData)
-                    }
+                    db.insertStretchData(stretch)
+                    updateViewData(db, myData)
+
+                    Toast.makeText(this, "Stretch added", Toast.LENGTH_SHORT).show()
+
                 } else Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
             }
 
@@ -104,6 +107,29 @@ class StretchActivity : AppCompatActivity() {
                 mAlertDialog.dismiss()
             }
         }
+    }
+
+    private fun updateViewData(db: DataBaseHandler, myData : ArrayList<Stretch>) {
+        val data = db.readStretchData()
+        var added = 0
+
+        for (i in 0 until (data.size)) {
+            var duplicates = 0
+            for (j in 0 until (myData.size-1)) {
+                if (data[i].name == myData[j].name) {
+                    duplicates++
+                }
+            }
+            if (duplicates == 0) {
+                myData.add(data[i])
+                added++
+            }
+        }
+        //update display
+        findViewById<RecyclerView>(R.id.recycler_view_stretches).apply {
+            adapter = StretchAdapter(myData)
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

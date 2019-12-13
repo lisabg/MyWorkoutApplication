@@ -44,15 +44,13 @@ class ExerciseActivity : AppCompatActivity() {
                 0, "Plank", "Place the palm of your hands on the floor centering your hands straight " +
                         "under your shoulders, place your feet so that your body is parallell to the ground and you " +
                         "are standing on your toes.", 30, 3
-            )
-        )
+            ))
         myPermData.add(
             Exercise(
                 0, "Push-ups", "Start in a plank-position with your hands in a wider stans" +
                         "than your shoulders. Lower yourself as far as possible and then push back up.",
                 10, 3
-            )
-        )
+            ))
 
         val data = db.readExerciseData()
         for (i in 0 until (data.size)) {
@@ -85,8 +83,7 @@ class ExerciseActivity : AppCompatActivity() {
                 if (!mExerciseDialogView.new_exercise_title_input.text.isBlank() &&
                     !mExerciseDialogView.new_exercise_description_input.text.isBlank() &&
                     !mExerciseDialogView.new_exercise_repetition_input.text.isBlank() &&
-                    !mExerciseDialogView.new_exercise_sets_input.text.isBlank()
-                ) {
+                    !mExerciseDialogView.new_exercise_sets_input.text.isBlank()) {
 
                     mAlertDialog.dismiss()
 
@@ -96,7 +93,12 @@ class ExerciseActivity : AppCompatActivity() {
                     val sets = mExerciseDialogView.new_exercise_sets_input.text.toString()
 
                     //add input to data array for display
-                    val exercise = Exercise(0, title, description, repetitions.toLong(), sets.toLong())
+                    val exercise = Exercise(
+                        0,
+                        title,
+                        description,
+                        repetitions.toLong(),
+                        sets.toLong())
 
                     db.insertExerciseData(exercise)
                     updateViewData(db, myPermData)
