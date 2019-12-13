@@ -18,6 +18,7 @@
     <string name="converter_to_type">To:</string>
     <string name="converter_result">Result:</string>
     <string-array name="converter_options">
+        <item>units</item>
         <item>kg</item>
         <item>g</item>
         <item>lb</item>
@@ -25,17 +26,17 @@
     </string-array>
 
 
-    <string name="exercise_title_hint">Enter exercise name</string>
-    <string name="exercise_description_hint">Enter exercise description</string>
-    <string name="exercise_repetition_hint">Enter number of repetitions in one set</string>
-    <string name="exercise_sets_hint">Enter number of sets</string>
+    <string name="exercise_title_hint">Exercise name</string>
+    <string name="exercise_description_hint">Exercise description</string>
+    <string name="exercise_repetition_hint">Repetitions in one set</string>
+    <string name="exercise_sets_hint">Number of sets</string>
     <string name="exercise_dialog_box_title">Add Exercise</string>
     <string name="exercise_details_dialog_box_title">Exercise Details</string>
 
-    <string name="stretch_title_hint">Enter stretch name</string>
-    <string name="stretch_description_hint">Enter stretch description</string>
-    <string name="stretch_time_hint">Enter seconds to hold one sett</string>
-    <string name="stretch_sets_hint">Enter number of sets</string>
+    <string name="stretch_title_hint">Stretch name</string>
+    <string name="stretch_description_hint">Stretch description</string>
+    <string name="stretch_time_hint">Seconds to hold one sett</string>
+    <string name="stretch_sets_hint">Number of sets</string>
     <string name="stretch_dialog_box_title">Add Stretch</string>
     <string name="stretch_details_dialog_box_title">Stretch Details</string>
 

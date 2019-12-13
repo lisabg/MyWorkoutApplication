@@ -68,7 +68,7 @@ class ConverterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         val text = p0!!.getItemAtPosition(p2).toString()
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+        if (text != "units") Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
     }
 
 
