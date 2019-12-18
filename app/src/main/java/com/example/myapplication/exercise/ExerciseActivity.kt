@@ -11,6 +11,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -20,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.DashboardActivity
 import com.example.myapplication.DataBaseHandler
 import com.example.myapplication.R
+import kotlinx.android.synthetic.main.exercise_card_view_layout.*
+import kotlinx.android.synthetic.main.activity_exercise_details.view.*
 import kotlinx.android.synthetic.main.exercise_main_layout.*
 import kotlinx.android.synthetic.main.exercise_new_dialog.view.*
 import java.text.FieldPosition
@@ -36,28 +40,28 @@ class ExerciseActivity : AppCompatActivity() {
         setContentView(R.layout.exercise_main_layout)
 
         val db = DataBaseHandler(this)
-        val myPermData = ArrayList<Exercise>()
-        deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_black_24dp)!!
+        val exerciseData = ArrayList<Exercise>()
+        // deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_black_24dp)!!
 
-        myPermData.add(
+/*        exerciseData.add(
             Exercise(
                 0, "Plank", "Place the palm of your hands on the floor centering your hands straight " +
                         "under your shoulders, place your feet so that your body is parallell to the ground and you " +
                         "are standing on your toes.", 30, 3
             ))
-        myPermData.add(
+        exerciseData.add(
             Exercise(
                 0, "Push-ups", "Start in a plank-position with your hands in a wider stans" +
                         "than your shoulders. Lower yourself as far as possible and then push back up.",
                 10, 3
-            ))
+            ))*/
 
         val data = db.readExerciseData()
         for (i in 0 until (data.size)) {
-            myPermData.add(data[i])
+            exerciseData.add(data[i])
         }
 
-        viewAdapter = ExerciseAdapter(myPermData)
+        viewAdapter = ExerciseAdapter(exerciseData)
         viewManager = LinearLayoutManager(this)
 
         findViewById<RecyclerView>(R.id.recycler_view_exercises).apply {
@@ -68,52 +72,7 @@ class ExerciseActivity : AppCompatActivity() {
             adapter = viewAdapter
         }
 
-        //add exercise pop-up
-        add_exercise_button.setOnClickListener {
-            //inflate the dialog with custom view
-            val mExerciseDialogView = LayoutInflater.from(this).inflate(R.layout.exercise_new_dialog, null)
-
-            //AlertDialogBuilder
-            val mBuilder = AlertDialog.Builder(this)
-                .setView(mExerciseDialogView)
-                .setTitle(R.string.exercise_dialog_box_title)
-            val mAlertDialog = mBuilder.show()
-
-            mExerciseDialogView.add_exercise_submit_button.setOnClickListener {
-                if (!mExerciseDialogView.new_exercise_title_input.text.isBlank() &&
-                    !mExerciseDialogView.new_exercise_description_input.text.isBlank() &&
-                    !mExerciseDialogView.new_exercise_repetition_input.text.isBlank() &&
-                    !mExerciseDialogView.new_exercise_sets_input.text.isBlank()) {
-
-                    mAlertDialog.dismiss()
-
-                    val title = mExerciseDialogView.new_exercise_title_input.text.toString()
-                    val description = mExerciseDialogView.new_exercise_description_input.text.toString()
-                    val repetitions = mExerciseDialogView.new_exercise_repetition_input.text.toString()
-                    val sets = mExerciseDialogView.new_exercise_sets_input.text.toString()
-
-                    //add input to data array for display
-                    val exercise = Exercise(
-                        0,
-                        title,
-                        description,
-                        repetitions.toLong(),
-                        sets.toLong())
-
-                    db.insertExerciseData(exercise)
-                    updateViewData(db, myPermData)
-
-                    Toast.makeText(this, "Exercise added", Toast.LENGTH_SHORT).show()
-
-                } else Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
-            }
-
-            mExerciseDialogView.add_exercise_cancel_button.setOnClickListener {
-                mAlertDialog.dismiss()
-            }
-        }
-
-
+        addExerciseFunctionality(exerciseData, db)
 
         //Swipe functionality
         val itemTouchHelperCallBack = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -129,7 +88,7 @@ class ExerciseActivity : AppCompatActivity() {
 
 
             //ICON NOT BEING DRAWN CORRECTLY
-            override fun onChildDraw(
+            /*override fun onChildDraw(
                 c: Canvas,
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -158,16 +117,60 @@ class ExerciseActivity : AppCompatActivity() {
                 c.restore()
 
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-            }
+            }*/
         }
 
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallBack)
         itemTouchHelper.attachToRecyclerView(recycler_view_exercises)
 
+    }
 
+    private fun addExerciseFunctionality(data : ArrayList<Exercise>, db : DataBaseHandler) {
 
+        add_exercise_button.setOnClickListener {
+            //inflate the dialog with custom view
+            val mExerciseDialogView = LayoutInflater.from(this).inflate(R.layout.exercise_new_dialog, null)
 
+            //AlertDialogBuilder
+            val mBuilder = AlertDialog.Builder(this)
+                .setView(mExerciseDialogView)
+                .setTitle(R.string.add_exercise_dialog_box_title)
+            val mAlertDialog = mBuilder.show()
+
+            mExerciseDialogView.add_exercise_submit_button.setOnClickListener {
+                if (!mExerciseDialogView.new_exercise_title_input.text.isBlank() &&
+                    !mExerciseDialogView.new_exercise_description_input.text.isBlank() &&
+                    !mExerciseDialogView.new_exercise_repetition_input.text.isBlank() &&
+                    !mExerciseDialogView.new_exercise_sets_input.text.isBlank()) {
+
+                    mAlertDialog.dismiss()
+
+                    val title = mExerciseDialogView.new_exercise_title_input.text.toString()
+                    val description = mExerciseDialogView.new_exercise_description_input.text.toString()
+                    val repetitions = mExerciseDialogView.new_exercise_repetition_input.text.toString()
+                    val sets = mExerciseDialogView.new_exercise_sets_input.text.toString()
+
+                    //add input to data array for display
+                    val exercise = Exercise(
+                        0,
+                        title,
+                        description,
+                        repetitions.toLong(),
+                        sets.toLong())
+
+                    db.insertExerciseData(exercise)
+                    updateViewData(db, data)
+
+                    Toast.makeText(this, "Exercise added", Toast.LENGTH_SHORT).show()
+
+                } else Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
+            }
+
+            mExerciseDialogView.add_exercise_cancel_button.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
+        }
     }
 
     private fun updateViewData(db: DataBaseHandler, myPermData : ArrayList<Exercise>) {
@@ -176,7 +179,7 @@ class ExerciseActivity : AppCompatActivity() {
 
         for (i in 0 until (data.size)) {
             var duplicates = 0
-            for (j in 0 until (myPermData.size-1)) {
+            for (j in 0 until (myPermData.size)) {
                 if (data[i].name == myPermData[j].name) {
                     duplicates++
                 }

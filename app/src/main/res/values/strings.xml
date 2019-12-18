@@ -30,7 +30,7 @@
     <string name="exercise_description_hint">Exercise description</string>
     <string name="exercise_repetition_hint">Repetitions in one set</string>
     <string name="exercise_sets_hint">Number of sets</string>
-    <string name="exercise_dialog_box_title">Add Exercise</string>
+    <string name="add_exercise_dialog_box_title">Add Exercise</string>
     <string name="exercise_details_dialog_box_title">Exercise Details</string>
 
     <string name="stretch_title_hint">Stretch name</string>
@@ -45,8 +45,6 @@
     <string name="dialog_details_button_title">Details</string>
     <string name="dialog_done_details_button_title">Done</string>
     <string name="dialog_edit_details_button_title">Edit</string>
-
-
 
 
 </resources>
