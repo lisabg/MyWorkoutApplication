@@ -29,27 +29,27 @@ class StretchActivity : AppCompatActivity() {
         setContentView(R.layout.stretch_main_layout)
 
         val db = DataBaseHandler(this)
-        val myData = ArrayList<Stretch>()
+        val stretchData = ArrayList<Stretch>()
 
-        myData.add(
+/*        stretchData.add(
             Stretch(
                 0, "Downward facing dog", "Place the palm of your hands on the floor centering your hands straight " +
                         "under your shoulders, place your feet flat on the ground. Try to straighten both your elbows and knees" +
                         "pushing your bottom towards the sky.", 30, 3
             ))
-        myData.add(
+        stretchData.add(
             Stretch(
                 0 , "Shoulder stretch", "Stretch and point one arm straight up towards the sky, then bend " +
                         "the elbow and reach your hand down towards your back. Your other hand may help push your bent" +
                         "elbow backwards.", 10, 3
-            ))
+            ))*/
 
         val data = db.readStretchData()
         for (i in 0 until (data.size)) {
-            myData.add(data[i])
+            stretchData.add(data[i])
         }
 
-        viewAdapter = StretchAdapter(myData)
+        viewAdapter = StretchAdapter(stretchData)
         viewManager = LinearLayoutManager(this)
 
         findViewById<RecyclerView>(R.id.recycler_view_stretches).apply {
@@ -57,12 +57,16 @@ class StretchActivity : AppCompatActivity() {
             // in content do not change the layout size of the RecyclerView
             setHasFixedSize(true)
 
-            // use a linear layout manager
             layoutManager = viewManager
-            // specify an viewAdapter (see also next example)
-            adapter = StretchAdapter(myData)
+            adapter = StretchAdapter(stretchData)
         }
 
+        addNewStretchFunctionality(stretchData, db)
+
+
+    }
+
+    private fun addNewStretchFunctionality(data : ArrayList<Stretch>, db : DataBaseHandler) {
 
         add_stretch_button.setOnClickListener {
             //inflate the dialog with custom view
@@ -89,14 +93,14 @@ class StretchActivity : AppCompatActivity() {
 
                     //add input to data array for display
                     val stretch = Stretch(
-                            0,
-                            title,
-                            description,
-                            seconds.toLong(),
-                            sets.toLong())
+                        0,
+                        title,
+                        description,
+                        seconds.toLong(),
+                        sets.toLong())
 
                     db.insertStretchData(stretch)
-                    updateViewData(db, myData)
+                    updateViewData(db, data)
 
                     Toast.makeText(this, "Stretch added", Toast.LENGTH_SHORT).show()
 
@@ -107,6 +111,7 @@ class StretchActivity : AppCompatActivity() {
                 mAlertDialog.dismiss()
             }
         }
+
     }
 
     private fun updateViewData(db: DataBaseHandler, myData : ArrayList<Stretch>) {
@@ -115,7 +120,7 @@ class StretchActivity : AppCompatActivity() {
 
         for (i in 0 until (data.size)) {
             var duplicates = 0
-            for (j in 0 until (myData.size-1)) {
+            for (j in 0 until (myData.size)) {
                 if (data[i].name == myData[j].name) {
                     duplicates++
                 }

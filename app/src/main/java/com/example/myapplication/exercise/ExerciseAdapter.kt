@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.DataBaseHandler
 import com.example.myapplication.R
 import com.google.android.material.snackbar.Snackbar
-import org.w3c.dom.Text
 
 class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) :
     RecyclerView.Adapter<ExerciseAdapter.MyViewHolder>() {
@@ -32,11 +31,10 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) :
         // - replace the contents of the view with that element
         val exercise: Exercise = exerciseList[position]
 
-        val name = exercise.name
         val repetitions = "Repetitions: " + exercise.repetition
         val sets = "Sets: " + exercise.sets
 
-        holder.exerciseName.text = name
+        holder.exerciseName.text = exercise.name
         holder.exerciseRepetitions.text = repetitions
         holder.exerciseSets.text = sets
     }

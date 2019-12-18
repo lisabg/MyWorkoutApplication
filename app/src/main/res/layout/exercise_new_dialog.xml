@@ -16,9 +16,11 @@
     <EditText
             android:id="@+id/new_exercise_description_input"
             android:hint="@string/exercise_description_hint"
-            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLength="2000"
+            android:maxLines="5"
     />
 
     <EditText

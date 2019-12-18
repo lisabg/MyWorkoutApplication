@@ -72,7 +72,7 @@ class ExerciseActivity : AppCompatActivity() {
             adapter = viewAdapter
         }
 
-        addExerciseFunctionality(exerciseData, db)
+        addNewExerciseFunctionality(exerciseData, db)
 
         //Swipe functionality
         val itemTouchHelperCallBack = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -126,7 +126,7 @@ class ExerciseActivity : AppCompatActivity() {
 
     }
 
-    private fun addExerciseFunctionality(data : ArrayList<Exercise>, db : DataBaseHandler) {
+    private fun addNewExerciseFunctionality(data : ArrayList<Exercise>, db : DataBaseHandler) {
 
         add_exercise_button.setOnClickListener {
             //inflate the dialog with custom view
