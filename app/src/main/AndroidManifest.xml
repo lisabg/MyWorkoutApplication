@@ -9,11 +9,12 @@
             android:roundIcon="@mipmap/ic_launcher_workout_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".exercise.ExerciseDetailsActivity"></activity>
-        <activity android:name=".stretch.StretchActivity"></activity>
-        <activity android:name=".exercise.ExerciseActivity"></activity>
-        <activity android:name=".converter.ConverterActivity"></activity>
-        <activity android:name=".DashboardActivity"></activity>
+        <activity android:name=".stretch.StretchDetailsActivity"></activity>
+        <activity android:name=".exercise.ExerciseDetailsActivity" />
+        <activity android:name=".stretch.StretchActivity" />
+        <activity android:name=".exercise.ExerciseActivity" />
+        <activity android:name=".converter.ConverterActivity" />
+        <activity android:name=".DashboardActivity" />
         <activity
                 android:name=".MainActivity"
                 android:theme="@style/AppTheme.NoActionBar">

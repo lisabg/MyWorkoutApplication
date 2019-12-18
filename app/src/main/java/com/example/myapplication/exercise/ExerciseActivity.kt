@@ -23,7 +23,7 @@ import com.example.myapplication.DashboardActivity
 import com.example.myapplication.DataBaseHandler
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.exercise_card_view_layout.*
-import kotlinx.android.synthetic.main.activity_exercise_details.view.*
+import kotlinx.android.synthetic.main.exercise_details_layout.view.*
 import kotlinx.android.synthetic.main.exercise_main_layout.*
 import kotlinx.android.synthetic.main.exercise_new_dialog.view.*
 import java.text.FieldPosition

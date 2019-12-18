@@ -1,77 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-            android:layout_margin="5dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_margin="5dp">
 
         <LinearLayout
-                android:paddingTop="10dp"
-                android:paddingLeft="10dp"
-                android:orientation="vertical"
-                android:gravity="start"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:orientation="vertical"
+                android:paddingStart="10dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="10dp">
 
             <TextView
                     android:id="@+id/stretch_name_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="6dp"
                     android:text=""
-                    android:paddingBottom="10dp"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+            <TextView
+                    android:id="@+id/stretch_time_id"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
-
-            <LinearLayout
-                    android:orientation="horizontal"
+            <TextView
+                    android:id="@+id/stretch_sets_id"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="6dp"
+                    android:text=""
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 
-                <LinearLayout
-                        android:orientation="vertical"
-                        android:gravity="start"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+            <!-- progress bar                  -->
 
-                    <TextView
-                            android:id="@+id/stretch_time_id"
-                            android:text=""
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-                    <TextView
-                            android:id="@+id/stretch_sets_id"
-                            android:text=""
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                        android:padding="10dp"
-                        android:orientation="vertical"
-                        android:gravity="bottom|end"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <Button
-                            android:id="@+id/view_stretch_button"
-                            style="@style/Base.Widget.AppCompat.Button.Colored"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/dialog_details_button_title"
-                    />
-
-                </LinearLayout>
-
-            </LinearLayout>
 
         </LinearLayout>
 
