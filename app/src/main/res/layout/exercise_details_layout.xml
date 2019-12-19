@@ -6,10 +6,12 @@
         android:layout_height="match_parent"
         tools:context=".exercise.ExerciseDetailsActivity">
 
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="57dp"
             android:gravity="start"
             android:orientation="vertical"
             android:padding="10dp"

@@ -9,7 +9,7 @@
             android:roundIcon="@mipmap/ic_launcher_workout_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".stretch.StretchDetailsActivity"></activity>
+        <activity android:name=".stretch.StretchDetailsActivity" />
         <activity android:name=".exercise.ExerciseDetailsActivity" />
         <activity android:name=".stretch.StretchActivity" />
         <activity android:name=".exercise.ExerciseActivity" />

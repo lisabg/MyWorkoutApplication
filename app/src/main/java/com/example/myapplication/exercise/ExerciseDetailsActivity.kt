@@ -1,11 +1,14 @@
 package com.example.myapplication.exercise
 
+import android.app.PendingIntent.getActivity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.exercise_details_layout.*
+import kotlinx.android.synthetic.main.toolbar.*
+
 
 class ExerciseDetailsActivity : AppCompatActivity() {
 
@@ -13,6 +16,10 @@ class ExerciseDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.exercise_details_layout)
 
+        setSupportActionBar(toolbar)
+        toolbar.title = "Exercise details"
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowHomeEnabled(true)
 
         close_exercise_details_button.setOnClickListener {
             startActivity(Intent(this@ExerciseDetailsActivity, ExerciseActivity::class.java))
@@ -24,6 +31,11 @@ class ExerciseDetailsActivity : AppCompatActivity() {
 
     }
 
+
+    override fun onSupportNavigateUp() : Boolean {
+        onBackPressed()
+        return true
+    }
 
     override fun onStart() {
         super.onStart()

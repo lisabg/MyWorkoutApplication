@@ -78,16 +78,16 @@ class StretchAdapter(private val stretchList: ArrayList<Stretch>) :
 
         override fun onClick(p0: View?) {
 
-            val exercise = findStretch(stretchName.text.toString())
-            if (exercise.id == -1) {
+            val stretch = findStretch(stretchName.text.toString())
+            if (stretch.id == -1) {
                 Toast.makeText(itemView.context, "ERROR. Try again.", Toast.LENGTH_SHORT).show()
                 return
             }
 
-            val intent = Intent(itemView.context, ExerciseDetailsActivity::class.java)
+            val intent = Intent(itemView.context, StretchDetailsActivity::class.java)
 
-            intent.putExtra("name", exercise.name)
-            intent.putExtra("description", exercise.description)
+            intent.putExtra("name", stretch.name)
+            intent.putExtra("description", stretch.description)
             intent.putExtra("time", stretchTime.text.toString())
             intent.putExtra("sets", stretchSets.text.toString())
 

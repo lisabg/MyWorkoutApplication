@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.exercise_card_view_layout.*
 import kotlinx.android.synthetic.main.exercise_details_layout.view.*
 import kotlinx.android.synthetic.main.exercise_main_layout.*
 import kotlinx.android.synthetic.main.exercise_new_dialog.view.*
+import kotlinx.android.synthetic.main.toolbar.*
 import java.text.FieldPosition
 
 class ExerciseActivity : AppCompatActivity() {
@@ -38,6 +39,9 @@ class ExerciseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.exercise_main_layout)
+
+        setSupportActionBar(toolbar)
+        toolbar.title = "Exercises"
 
         val db = DataBaseHandler(this)
         val exerciseData = ArrayList<Exercise>()

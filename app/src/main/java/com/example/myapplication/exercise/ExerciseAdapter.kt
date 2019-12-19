@@ -27,7 +27,7 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) :
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        // - get element from your dataset at this position
+        // - get element from your data set at this position
         // - replace the contents of the view with that element
         val exercise: Exercise = exerciseList[position]
 

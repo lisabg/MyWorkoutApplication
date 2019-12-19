@@ -7,7 +7,7 @@
     <item android:id="@+id/action_dashboard_button"
           android:icon="@drawable/ic_menu_icon_white_24dp"
           android:title="@string/view_dashboard_button_text"
-          app:showAsAction="ifRoom" />
+          app:showAsAction="always" />
 
 
     <!--<item android:id="@+id/dashboard"

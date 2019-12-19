@@ -1,21 +1,21 @@
 package com.example.myapplication.stretch
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.DashboardActivity
 import com.example.myapplication.DataBaseHandler
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.stretch_main_layout.*
-import kotlinx.android.synthetic.main.stretch_new_dialog.*
 import kotlinx.android.synthetic.main.stretch_new_dialog.view.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 
 class StretchActivity : AppCompatActivity() {
@@ -27,6 +27,9 @@ class StretchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.stretch_main_layout)
+
+        setSupportActionBar(toolbar)
+        toolbar.title = "Stretches"
 
         val db = DataBaseHandler(this)
         val stretchData = ArrayList<Stretch>()
@@ -62,8 +65,6 @@ class StretchActivity : AppCompatActivity() {
         }
 
         addNewStretchFunctionality(stretchData, db)
-
-
     }
 
     private fun addNewStretchFunctionality(data : ArrayList<Stretch>, db : DataBaseHandler) {

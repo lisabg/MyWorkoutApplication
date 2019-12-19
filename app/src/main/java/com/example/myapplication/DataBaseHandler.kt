@@ -136,13 +136,9 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     fun readStretchData() : MutableList<Stretch> {
         val list : MutableList<Stretch> = ArrayList()
 
-        println("I got here 1 *************************************")
-
         val db = this.readableDatabase
         val query = "Select * from $ST_TABLE_NAME"
         val result = db.rawQuery(query, null)
-
-        println("I got here 2 *************************************")
 
         if (result.moveToFirst()) {
             do {

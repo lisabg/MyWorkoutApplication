@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 
 class SplashScreenActivity : AppCompatActivity() {
 
-    private val splashTimeOut = 2500L
+    private val splashTimeOut = 1500L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
