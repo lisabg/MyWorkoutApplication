@@ -34,7 +34,7 @@ class StretchActivity : AppCompatActivity() {
         val db = DataBaseHandler(this)
         val stretchData = ArrayList<Stretch>()
 
-        stretchData.add(
+/*        stretchData.add(
             Stretch(
                 0, "Downward facing dog", "Place the palm of your hands on the floor centering your hands straight " +
                         "under your shoulders, place your feet flat on the ground. Try to straighten both your elbows and knees" +
@@ -45,7 +45,7 @@ class StretchActivity : AppCompatActivity() {
                 0 , "Shoulder stretch", "Stretch and point one arm straight up towards the sky, then bend " +
                         "the elbow and reach your hand down towards your back. Your other hand may help push your bent" +
                         "elbow backwards.", 10, 3
-            ))
+            ))*/
 
         val data = db.readStretchData()
         for (i in 0 until (data.size)) {
@@ -115,7 +115,7 @@ class StretchActivity : AppCompatActivity() {
 
     }
 
-    private fun updateViewData(db: DataBaseHandler, myData : ArrayList<Stretch>) {
+    fun updateViewData(db: DataBaseHandler, myData : ArrayList<Stretch>) {
         val data = db.readStretchData()
         var added = 0
 
@@ -135,7 +135,6 @@ class StretchActivity : AppCompatActivity() {
         findViewById<RecyclerView>(R.id.recycler_view_stretches).apply {
             adapter = StretchAdapter(myData)
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

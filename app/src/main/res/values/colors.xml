@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="colorBluePrimary">#2196F3</color>
-    <color name="colorBluePrimaryDark">#3F51B5</color>
+    <color name="colorLisaPrimaryDark">#2B377C</color>
+    <color name="colorLisaPrimary">#3F51B5</color>
+    <color name="colorLisaPrimaryLight">#979797</color>
 </resources>

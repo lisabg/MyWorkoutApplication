@@ -1,6 +1,7 @@
 package com.example.myapplication.stretch
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,8 +89,9 @@ class StretchAdapter(private val stretchList: ArrayList<Stretch>) :
 
             intent.putExtra("name", stretch.name)
             intent.putExtra("description", stretch.description)
-            intent.putExtra("time", stretchTime.text.toString())
-            intent.putExtra("sets", stretchSets.text.toString())
+
+            intent.putExtra("time", stretch.seconds.toString())
+            intent.putExtra("sets", stretch.sets.toString())
 
             startActivity(itemView.context, intent, null)
         }

@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import android.widget.Toast
 import com.example.myapplication.exercise.Exercise
 import com.example.myapplication.stretch.Stretch
@@ -160,6 +161,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
 
     fun updateStretchData(stretch: Stretch) : Boolean  {
         val db = this.writableDatabase
+
         val cv = ContentValues()
         cv.put(ST_COL_NAME, stretch.name)
         cv.put(ST_COL_DESCRIPTION, stretch.description)

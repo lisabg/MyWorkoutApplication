@@ -47,7 +47,7 @@ class ExerciseActivity : AppCompatActivity() {
         val exerciseData = ArrayList<Exercise>()
         // deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_black_24dp)!!
 
-        exerciseData.add(
+/*        exerciseData.add(
             Exercise(
                 0, "Plank", "Place the palm of your hands on the floor centering your hands straight " +
                         "under your shoulders, place your feet so that your body is parallell to the ground and you " +
@@ -58,7 +58,7 @@ class ExerciseActivity : AppCompatActivity() {
                 0, "Push-ups", "Start in a plank-position with your hands in a wider stans" +
                         "than your shoulders. Lower yourself as far as possible and then push back up.",
                 10, 3
-            ))
+            ))*/
 
         val data = db.readExerciseData()
         for (i in 0 until (data.size)) {

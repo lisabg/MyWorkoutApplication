@@ -1,51 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:orientation="vertical"
               android:padding="20dp">
 
     <EditText
             android:id="@+id/new_stretch_title_input"
-            android:hint="@string/stretch_title_hint"
-            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/stretch_title_hint"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLength="2000"
+            android:maxLines="5"
     />
 
     <EditText
             android:id="@+id/new_stretch_description_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="@string/stretch_description_hint"
             android:inputType="textCapSentences|textMultiLine"
             android:maxLength="2000"
             android:maxLines="5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
     />
 
     <EditText
             android:id="@+id/new_stretch_time_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="@string/stretch_time_hint"
             android:inputType="number"
             android:maxLength="4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
     />
 
     <EditText
             android:id="@+id/new_stretch_sets_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:hint="@string/stretch_sets_hint"
             android:inputType="number"
             android:maxLength="4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
     />
 
     <LinearLayout
-            android:gravity="end"
-            android:paddingTop="7dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:paddingTop="7dp">
 
         <Button
                 android:id="@+id/add_stretch_cancel_button"

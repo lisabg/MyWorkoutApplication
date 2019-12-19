@@ -7,30 +7,38 @@
         tools:context=".DashboardActivity">
 
     <include
-            android:id="@+id/include"
-            layout="@layout/toolbar" />
+            android:id="@+id/dashboard_main"
+            layout="@layout/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageButton
             android:id="@+id/dashboard_stretching_button"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="126dp"
+            android:layout_height="127dp"
             android:layout_marginTop="89dp"
-            android:background="@drawable/stretch_clipart"
+            android:backgroundTint="#FFFFFF"
             android:contentDescription="@string/dashboard_stretching_button_description"
+            android:scaleType="fitCenter"
+            android:src="@drawable/stretch_clipart"
             android:text="@string/view_converter_button_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/include" />
+            app:layout_constraintTop_toTopOf="@+id/dashboard_main" />
 
     <ImageButton
             android:id="@+id/dashboard_exercises_button"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="36dp"
-            android:background="@drawable/exercise_clipart"
+            android:layout_width="126dp"
+            android:layout_height="127dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#FFFFFF"
             android:contentDescription="@string/dashboard_exercise_button_description"
+            android:scaleType="fitCenter"
+            android:src="@drawable/exercise_clipart"
             android:text="@string/view_converter_button_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,11 +50,13 @@
 
     <ImageButton
             android:id="@+id/dashboard_converter_button"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="36dp"
-            android:background="@drawable/converter_clipart"
+            android:layout_width="126dp"
+            android:layout_height="127dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#FFFFFF"
             android:contentDescription="@string/dashboard_converter_button_description"
+            android:scaleType="fitCenter"
+            android:src="@drawable/converter_clipart"
             android:text="@string/view_converter_button_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
