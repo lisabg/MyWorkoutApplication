@@ -16,7 +16,7 @@
         <activity android:name=".converter.ConverterActivity" />
         <activity android:name=".DashboardActivity" />
         <activity
-                android:name=".MainActivity"
+                android:name=".SplashScreenActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
