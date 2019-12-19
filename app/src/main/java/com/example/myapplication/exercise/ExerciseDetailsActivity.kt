@@ -21,14 +21,6 @@ class ExerciseDetailsActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
 
-        close_exercise_details_button.setOnClickListener {
-            startActivity(Intent(this@ExerciseDetailsActivity, ExerciseActivity::class.java))
-        }
-
-        edit_exercise_details_button.setOnClickListener {
-            Toast.makeText(this, "clicked EDIT button", Toast.LENGTH_SHORT).show()
-        }
-
     }
 
 

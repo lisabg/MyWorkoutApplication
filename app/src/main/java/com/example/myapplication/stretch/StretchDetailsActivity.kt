@@ -19,14 +19,6 @@ class StretchDetailsActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
 
-        close_stretch_details_button.setOnClickListener {
-
-            startActivity(Intent(this@StretchDetailsActivity, StretchActivity::class.java))
-        }
-
-        edit_stretch_details_button.setOnClickListener {
-            Toast.makeText(this, "clicked EDIT button", Toast.LENGTH_SHORT).show()
-        }
     }
 
     override fun onSupportNavigateUp() : Boolean {
