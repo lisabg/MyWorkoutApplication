@@ -1,5 +1,6 @@
 package com.example.myapplication.stretch
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.DashboardActivity
@@ -22,6 +24,7 @@ class StretchActivity : AppCompatActivity() {
 
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var itemTouchHelperCallBack: ItemTouchHelper.SimpleCallback
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +32,7 @@ class StretchActivity : AppCompatActivity() {
         setContentView(R.layout.stretch_main_layout)
 
         setSupportActionBar(toolbar)
-        toolbar.title = "Stretches"
+        toolbar.title = getString(R.string.stretch_title)
 
         val db = DataBaseHandler(this)
         val stretchData = ArrayList<Stretch>()
@@ -65,6 +68,57 @@ class StretchActivity : AppCompatActivity() {
         }
 
         addNewStretchFunctionality(stretchData, db)
+
+        val itemTouchHelper = ItemTouchHelper(swipeFunctionality(db))
+        itemTouchHelper.attachToRecyclerView(recycler_view_stretches)
+    }
+
+    private fun swipeFunctionality(db : DataBaseHandler) : ItemTouchHelper.SimpleCallback {
+
+        itemTouchHelperCallBack = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
+                val stretchObject = (viewAdapter as StretchAdapter).removeStretchItem(viewHolder, db)
+                db.deleteStretchData(stretchObject)
+            }
+
+            //ICON NOT BEING DRAWN CORRECTLY
+            /*override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+                val iconMargin = (itemView.height - deleteIcon.intrinsicHeight) / 2
+
+                if (dX > 0) {
+                    swipeBackground.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                    deleteIcon.setBounds(
+                        itemView.left + iconMargin,
+                        itemView.top + iconMargin,
+                        itemView.right + iconMargin + deleteIcon.intrinsicWidth,
+                        itemView.bottom - iconMargin)
+                }
+
+                swipeBackground.draw(c)
+                c.save()
+
+                if (dX > 0) c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                deleteIcon.draw(c)
+                c.restore()
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            }*/
+        }
+        return itemTouchHelperCallBack
     }
 
     private fun addNewStretchFunctionality(data : ArrayList<Stretch>, db : DataBaseHandler) {

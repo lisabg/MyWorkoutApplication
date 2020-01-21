@@ -24,7 +24,7 @@
             android:contentDescription="@string/dashboard_stretching_button_description"
             android:scaleType="fitCenter"
             android:src="@drawable/stretch_clipart"
-            android:text="@string/view_converter_button_text"
+            android:text="@string/converter_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,12 +34,12 @@
             android:id="@+id/dashboard_exercises_button"
             android:layout_width="126dp"
             android:layout_height="127dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:backgroundTint="#FFFFFF"
             android:contentDescription="@string/dashboard_exercise_button_description"
             android:scaleType="fitCenter"
             android:src="@drawable/exercise_clipart"
-            android:text="@string/view_converter_button_text"
+            android:text="@string/converter_title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -52,18 +52,51 @@
             android:id="@+id/dashboard_converter_button"
             android:layout_width="126dp"
             android:layout_height="127dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:backgroundTint="#FFFFFF"
             android:contentDescription="@string/dashboard_converter_button_description"
             android:scaleType="fitCenter"
             android:src="@drawable/converter_clipart"
-            android:text="@string/view_converter_button_text"
+            android:text="@string/converter_title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dashboard_exercises_button"
             app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/stretch_title"
+            app:layout_constraintEnd_toStartOf="@+id/dashboard_exercises_button"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/dashboard_exercises_button"
+            app:layout_constraintTop_toBottomOf="@+id/dashboard_stretching_button" />
+
+    <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/exercise_title"
+            app:layout_constraintEnd_toStartOf="@+id/dashboard_converter_button"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/dashboard_converter_button"
+            app:layout_constraintTop_toBottomOf="@+id/dashboard_exercises_button" />
+
+    <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/converter_title"
+            app:layout_constraintEnd_toStartOf="@+id/dashboard_main"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/dashboard_main"
+            app:layout_constraintTop_toBottomOf="@+id/dashboard_converter_button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

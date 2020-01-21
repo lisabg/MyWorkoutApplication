@@ -83,6 +83,7 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) :
 
             val intent = Intent(itemView.context, ExerciseDetailsActivity::class.java)
 
+            intent.putExtra("id", exercise.id.toString())
             intent.putExtra("name", exercise.name)
             intent.putExtra("description", exercise.description)
             intent.putExtra("repetition", exercise.repetition.toString())

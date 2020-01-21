@@ -87,9 +87,9 @@ class StretchAdapter(private val stretchList: ArrayList<Stretch>) :
 
             val intent = Intent(itemView.context, StretchDetailsActivity::class.java)
 
+            intent.putExtra("id", stretch.id.toString())
             intent.putExtra("name", stretch.name)
             intent.putExtra("description", stretch.description)
-
             intent.putExtra("time", stretch.seconds.toString())
             intent.putExtra("sets", stretch.sets.toString())
 

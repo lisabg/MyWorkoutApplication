@@ -11,8 +11,6 @@ import androidx.appcompat.app.AlertDialog
 import com.example.myapplication.DataBaseHandler
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.stretch_details_layout.*
-import kotlinx.android.synthetic.main.stretch_main_layout.*
-import kotlinx.android.synthetic.main.stretch_new_dialog.*
 import kotlinx.android.synthetic.main.stretch_new_dialog.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 
@@ -24,8 +22,8 @@ class StretchDetailsActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
         toolbar.title = "Stretch details"
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         editStretchFunctionality()
 
@@ -54,18 +52,21 @@ class StretchDetailsActivity : AppCompatActivity() {
                 ) {
 
                     mAlertDialog.dismiss()
+                    startActivity(Intent(this@StretchDetailsActivity, StretchActivity::class.java))
 
                     val db = DataBaseHandler(this)
 
+                    val id = intent.extras?.getString("id")!!.toInt()
                     val title = mStretchDialogView.new_stretch_title_input.text.toString()
                     val description =
                         mStretchDialogView.new_stretch_description_input.text.toString()
                     val seconds = mStretchDialogView.new_stretch_time_input.text.toString()
                     val sets = mStretchDialogView.new_stretch_sets_input.text.toString()
 
+
                     //add input to data array for display
                     val stretch = Stretch(
-                        0,
+                        id,
                         title,
                         description,
                         seconds.toLong(),

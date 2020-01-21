@@ -1,5 +1,6 @@
 package com.example.myapplication.exercise
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
@@ -33,6 +34,7 @@ class ExerciseActivity : AppCompatActivity() {
 
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var itemTouchHelperCallBack: ItemTouchHelper.SimpleCallback
     private lateinit var deleteIcon: Drawable
     private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
 
@@ -41,7 +43,7 @@ class ExerciseActivity : AppCompatActivity() {
         setContentView(R.layout.exercise_main_layout)
 
         setSupportActionBar(toolbar)
-        toolbar.title = "Exercises"
+        toolbar.title = getString(R.string.exercise_title)
 
         val db = DataBaseHandler(this)
         val exerciseData = ArrayList<Exercise>()
@@ -78,8 +80,14 @@ class ExerciseActivity : AppCompatActivity() {
 
         addNewExerciseFunctionality(exerciseData, db)
 
-        //Swipe functionality
-        val itemTouchHelperCallBack = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        val itemTouchHelper = ItemTouchHelper(swipeFunctionality(db))
+        itemTouchHelper.attachToRecyclerView(recycler_view_exercises)
+
+    }
+
+    private fun swipeFunctionality(db : DataBaseHandler) : ItemTouchHelper.SimpleCallback {
+
+        itemTouchHelperCallBack = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder
             ): Boolean {
                 return false
@@ -123,11 +131,7 @@ class ExerciseActivity : AppCompatActivity() {
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }*/
         }
-
-
-        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallBack)
-        itemTouchHelper.attachToRecyclerView(recycler_view_exercises)
-
+        return itemTouchHelperCallBack
     }
 
     private fun addNewExerciseFunctionality(data : ArrayList<Exercise>, db : DataBaseHandler) {
@@ -139,7 +143,7 @@ class ExerciseActivity : AppCompatActivity() {
             //AlertDialogBuilder
             val mBuilder = AlertDialog.Builder(this)
                 .setView(mExerciseDialogView)
-                .setTitle(R.string.add_exercise_dialog_box_title)
+                .setTitle(R.string.exercise_dialog_box_title)
             val mAlertDialog = mBuilder.show()
 
             mExerciseDialogView.add_exercise_submit_button.setOnClickListener {

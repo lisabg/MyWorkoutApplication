@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
@@ -27,6 +28,11 @@ val ST_COL_SECONDS ="seconds"
 val ST_COL_SETS = "sets"
 
 class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+
+    val all: Cursor
+        get() = this.writableDatabase.query(ST_TABLE_NAME, null, null, null, null, null, null)
+
+
     override fun onCreate(p0: SQLiteDatabase?) {
 
         val createExTable = ("CREATE TABLE " + EX_TABLE_NAME + "(" +
@@ -52,6 +58,7 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
             execSQL("DROP TABLE IF EXISTS " + EX_TABLE_NAME)
             execSQL("DROP TABLE IF EXISTS " + ST_TABLE_NAME)
         }
+
         onCreate(db)
     }
 
@@ -99,12 +106,19 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     fun updateExerciseData(exercise: Exercise) : Boolean  {
         val db = this.writableDatabase
         val cv = ContentValues()
+
         cv.put(EX_COL_NAME, exercise.name)
         cv.put(EX_COL_DESCRIPTION, exercise.description)
         cv.put(EX_COL_REPETITIONS, exercise.repetition)
         cv.put(EX_COL_SETS, exercise.sets)
-        db.update(EX_TABLE_NAME, cv, "$EX_COL_ID= ?", arrayOf(exercise.id.toString()))
-        return true
+
+        val whereClause = "$ST_COL_ID=?"
+        val whereArgs = arrayOf(exercise.id.toString())
+
+        val _success = db.update(EX_TABLE_NAME, cv, whereClause, whereArgs)
+        db.close()
+
+        return Integer.parseInt("$_success") != -1
     }
 
     fun deleteExerciseData(name: String) : Int {
@@ -160,25 +174,46 @@ class DataBaseHandler(val context: Context) : SQLiteOpenHelper(context, DATABASE
     }
 
     fun updateStretchData(stretch: Stretch) : Boolean  {
-        val db = this.writableDatabase
 
+        val db = this.writableDatabase
         val cv = ContentValues()
+
         cv.put(ST_COL_NAME, stretch.name)
         cv.put(ST_COL_DESCRIPTION, stretch.description)
         cv.put(ST_COL_SECONDS, stretch.seconds)
         cv.put(ST_COL_SETS, stretch.sets)
-        db.update(ST_TABLE_NAME, cv, "$ST_COL_ID= ?", arrayOf(stretch.id.toString()))
-        return true
+
+        val whereClause = "$ST_COL_ID=?"
+        val whereArgs = arrayOf(stretch.id.toString())
+
+        val _success = db.update(ST_TABLE_NAME, cv, whereClause, whereArgs)
+        db.close()
+
+        return Integer.parseInt("$_success") != -1
     }
 
     fun deleteStretchData(name: String) : Int {
         val db = this.writableDatabase
         val result = db.delete(ST_TABLE_NAME, "$ST_COL_NAME=?", arrayOf(name))
-        if (result == -1) {
-            Toast.makeText(context, "DB Failed", Toast.LENGTH_SHORT).show()
-        } else Toast.makeText(context, "DB Success", Toast.LENGTH_SHORT).show()
+        if (result >= 1) {
+            Toast.makeText(context, "DB Success", Toast.LENGTH_SHORT).show()
+        } else Toast.makeText(context, "DB Failed", Toast.LENGTH_SHORT).show()
         db.close()
         return result
+    }
+
+    fun logUpdatedStretch() {
+        val csr = all
+        val sb = StringBuilder()
+        while (csr.moveToNext()) {
+            sb.append("Row is " + csr.position.toString())
+            sb.append("\n\tId is :").append(csr.getInt(csr.getColumnIndex(ST_COL_ID)))
+            sb.append("\n\tName is :").append(csr.getString(csr.getColumnIndex(ST_COL_NAME)))
+            sb.append("\n\tDescription is :").append(csr.getString(csr.getColumnIndex(ST_COL_DESCRIPTION)))
+            sb.append("\n\t Seconds is ").append(csr.getLong(csr.getColumnIndex(ST_COL_SECONDS)).toString())
+            sb.append("\n\t Sets is ").append(csr.getLong(csr.getColumnIndex(ST_COL_SETS)).toString())
+            Log.d("LOGDATA", sb.toString())
+        }
     }
 }
 

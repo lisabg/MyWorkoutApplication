@@ -10,6 +10,7 @@ import android.widget.*
 import com.example.myapplication.DashboardActivity
 import com.example.myapplication.R
 import kotlinx.android.synthetic.main.converter_layout.*
+import kotlinx.android.synthetic.main.toolbar.*
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
@@ -18,6 +19,9 @@ class ConverterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.converter_layout)
+
+        setSupportActionBar(toolbar)
+        toolbar.title = getString(R.string.converter_title)
 
         val myArray = resources.getStringArray(R.array.converter_options)
         val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myArray)

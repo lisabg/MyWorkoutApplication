@@ -6,11 +6,11 @@
     <string name="workout_clipart_description">Three people working out</string>
     <string name="view_menu_menu_button_text">Main Menu</string>
     <string name="view_dashboard_button_text">Dashboard</string>
-    <string name="view_converter_button_text">Converter</string>
     <string name="dashboard_exercise_button_description">Person exercising</string>
     <string name="dashboard_stretching_button_description">Person stretching</string>
     <string name="dashboard_converter_button_description">Symbols depicting conversion of units</string>
 
+    <string name="converter_title">Converter</string>
     <string name="converter_text_input_hint">1&#8211;999 999</string>
     <string name="converter_instructions">Type quantity to convert</string>
     <string name="converter_convert_button">Convert</string>
@@ -26,13 +26,16 @@
     </string-array>
 
 
+    <string name="exercise_title">Exercises</string>
     <string name="exercise_title_hint">Exercise name</string>
     <string name="exercise_description_hint">Exercise description</string>
     <string name="exercise_repetition_hint">Repetitions in one set</string>
     <string name="exercise_sets_hint">Number of sets</string>
-    <string name="add_exercise_dialog_box_title">Add Exercise</string>
+    <string name="exercise_dialog_box_title">Add Exercise</string>
+    <string name="exercise_edit_dialog_box_title">Edit Exercise</string>
     <string name="exercise_details_dialog_box_title">Exercise Details</string>
 
+    <string name="stretch_title">Stretches</string>
     <string name="stretch_title_hint">Stretch name</string>
     <string name="stretch_description_hint">Stretch description</string>
     <string name="stretch_time_hint">Seconds to hold one sett</string>
