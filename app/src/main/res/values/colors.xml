@@ -7,4 +7,8 @@
     <color name="colorLisaPrimaryDark">#2B377C</color>
     <color name="colorLisaPrimary">#3F51B5</color>
     <color name="colorLisaPrimaryLight">#979797</color>
+
+    <color name="colorGoalStart">#FF0008</color>
+    <color name="colorGoalHalfway">#FF9800</color>
+    <color name="colorGoalComplete">#09990F</color>
 </resources>

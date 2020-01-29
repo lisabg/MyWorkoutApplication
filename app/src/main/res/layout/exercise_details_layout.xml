@@ -46,6 +46,53 @@
                 android:id="@+id/exercise_sets_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text=""
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+        <TextView
+                android:id="@+id/exercise_weight_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text=""
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+            <ProgressBar
+                    android:id="@+id/exercise_details_progress_bar"
+                    style="?android:progressBarStyleHorizontal"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progressDrawable="@drawable/circular_progress_bar" />
+
+            <TextView
+                    android:id="@+id/exercise_details_progress_percentage"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:gravity="center"
+                    android:textColor="#000000"
+                    android:textSize="40sp" />
+
+        </RelativeLayout>
+
+        <ListView
+                android:id="@+id/exercise_details_history_list"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent">
+        </ListView>
+
+
+        <TextView
+                android:id="@+id/exercise_goal_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text=""
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
 

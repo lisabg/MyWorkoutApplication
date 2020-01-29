@@ -1,22 +1,26 @@
 package com.example.myapplication.exercise
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.DataBaseHandler
 import com.example.myapplication.R
+import com.example.myapplication.entities.Exercise
+import com.example.myapplication.entities.calculateProgress
 import com.google.android.material.snackbar.Snackbar
 
-class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) :
-    RecyclerView.Adapter<ExerciseAdapter.MyViewHolder>() {
+class ExerciseActivityAdapter(private val exerciseList: ArrayList<Exercise>, val context: Context) :
+    RecyclerView.Adapter<ExerciseActivityAdapter.MyViewHolder>() {
 
     private var removedPosition : Int = 0
-    private var removedItem: Exercise = Exercise()
+    private var removedItem: Exercise =
+        Exercise("", "", 0, 0, 0, 0)
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -33,13 +37,25 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) :
 
         val repetitions = "Repetitions: " + exercise.repetition
         val sets = "Sets: " + exercise.sets
+        val weight = "Weight: " + exercise.weight
 
         holder.exerciseName.text = exercise.name
         holder.exerciseRepetitions.text = repetitions
         holder.exerciseSets.text = sets
+        holder.exerciseWeight.text = weight
+
+        if (exercise.weight == exercise.weightStart) {
+            holder.progressBar.progress = 0
+            holder.progressPercentage.text = "0%"
+        }
+        else {
+            val percentage = calculateProgress(exercise.weightStart, exercise.weight, exercise.weightGoal)
+            holder.progressBar.progress = percentage
+            holder.progressPercentage.text = context.getString(R.string.percentage_text, percentage)
+        }
     }
 
-    fun removeExerciseItem(viewHolder: RecyclerView.ViewHolder, db: DataBaseHandler) : String{
+    fun removeExerciseItem(viewHolder: RecyclerView.ViewHolder, db: ExerciseDataBaseHandler) : String{
         removedPosition = viewHolder.adapterPosition
         removedItem = exerciseList[viewHolder.adapterPosition]
 
@@ -72,6 +88,9 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) :
         val exerciseName = itemView.findViewById(R.id.exercise_name_id) as TextView
         val exerciseRepetitions = itemView.findViewById(R.id.exercise_repetition_id) as TextView
         val exerciseSets = itemView.findViewById(R.id.exercise_sets_id) as TextView
+        val exerciseWeight = itemView.findViewById(R.id.exercise_weight_id) as TextView
+        val progressBar = itemView.findViewById(R.id.exercise_card_view_progress_bar) as ProgressBar
+        val progressPercentage = itemView.findViewById(R.id.exercise_card_view_progress_percentage) as TextView
 
         override fun onClick(p0: View?) {
 
@@ -88,6 +107,9 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) :
             intent.putExtra("description", exercise.description)
             intent.putExtra("repetition", exercise.repetition.toString())
             intent.putExtra("sets", exercise.sets.toString())
+            intent.putExtra("weight", exercise.weight.toString())
+            intent.putExtra("start", exercise.weightStart.toString())
+            intent.putExtra("goal", exercise.weightGoal.toString())
 
             startActivity(itemView.context, intent, null)
         }
@@ -97,7 +119,7 @@ class ExerciseAdapter(private val exerciseList: ArrayList<Exercise>) :
             for (e in exerciseList) {
                 if (e.name == name) return e
             }
-            return Exercise(-1, "", "", 0, 0)
+            return Exercise("", "", 0, 0, 0, 0)
         }
 
     }

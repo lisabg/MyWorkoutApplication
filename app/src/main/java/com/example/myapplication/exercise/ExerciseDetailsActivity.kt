@@ -1,6 +1,5 @@
 package com.example.myapplication.exercise
 
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +8,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.DataBaseHandler
 import com.example.myapplication.R
+import com.example.myapplication.entities.Exercise
+import com.example.myapplication.entities.calculateProgress
 import kotlinx.android.synthetic.main.exercise_details_layout.*
 import kotlinx.android.synthetic.main.exercise_new_dialog.view.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -50,34 +50,36 @@ class ExerciseDetailsActivity : AppCompatActivity() {
                 if (!mExerciseDialogView.new_exercise_title_input.text.isBlank() &&
                     !mExerciseDialogView.new_exercise_description_input.text.isBlank() &&
                     !mExerciseDialogView.new_exercise_repetition_input.text.isBlank() &&
-                    !mExerciseDialogView.new_exercise_sets_input.text.isBlank()
+                    !mExerciseDialogView.new_exercise_sets_input.text.isBlank() &&
+                    !mExerciseDialogView.new_exercise_weight_input.text.isBlank() &&
+                    !mExerciseDialogView.new_exercise_goal_input.text.isBlank()
                 ) {
 
                     mAlertDialog.dismiss()
-                    startActivity(
-                        Intent(
-                            this@ExerciseDetailsActivity,
-                            ExerciseActivity::class.java
-                        )
-                    )
+                    startActivity(Intent(this@ExerciseDetailsActivity, ExerciseActivity::class.java))
 
-                    val db = DataBaseHandler(this)
+                    val db = ExerciseDataBaseHandler(this)
 
                     val id = intent.extras?.getString("id")!!.toInt()
                     val title = mExerciseDialogView.new_exercise_title_input.text.toString()
                     val description = mExerciseDialogView.new_exercise_description_input.text.toString()
                     val repetitions = mExerciseDialogView.new_exercise_repetition_input.text.toString()
                     val sets = mExerciseDialogView.new_exercise_sets_input.text.toString()
+                    val weight = mExerciseDialogView.new_exercise_weight_input.text.toString()
+                    val weightGoal = mExerciseDialogView.new_exercise_goal_input.text.toString()
 
 
                     //add input to data array for display
                     val exercise = Exercise(
-                        id,
                         title,
                         description,
                         repetitions.toLong(),
-                        sets.toLong()
+                        sets.toLong(),
+                        weight.toLong(),
+                        weightGoal.toLong()
                     )
+
+                    exercise.id = id
 
                     db.updateExerciseData(exercise)
 
@@ -99,7 +101,8 @@ class ExerciseDetailsActivity : AppCompatActivity() {
         view.new_exercise_description_input.setText(intent.extras?.getString("description"), TextView.BufferType.EDITABLE)
         view.new_exercise_repetition_input.setText(intent.extras?.getString("repetition"), TextView.BufferType.EDITABLE)
         view.new_exercise_sets_input.setText(intent.extras?.getString("sets"), TextView.BufferType.EDITABLE)
-
+        view.new_exercise_weight_input.setText(intent.extras?.getString("weight"), TextView.BufferType.EDITABLE)
+        view.new_exercise_goal_input.setText(intent.extras?.getString("goal"), TextView.BufferType.EDITABLE)
     }
 
     override fun onSupportNavigateUp() : Boolean {
@@ -110,10 +113,33 @@ class ExerciseDetailsActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        exercise_name_details.text = intent.extras?.getString("name")
-        exercise_description_details.text = intent.extras?.getString("description")
-        exercise_repetition_details.text = intent.extras?.getString("repetition")
-        exercise_sets_details.text = intent.extras?.getString("sets")
+        val name = intent.extras?.getString("name")
+        val description = intent.extras?.getString("description")
+        val repetitions = intent.extras?.getString("repetition")
+        val sets = intent.extras?.getString("sets")
+        val weight = intent.extras?.getString("weight")
+        val goal = intent.extras?.getString("goal")
+        val start = intent.extras?.getString("start")
 
+
+        exercise_name_details.text = name
+        exercise_description_details.text = description
+        exercise_repetition_details.text = getString(R.string.repetition_text, repetitions!!.toInt())
+        exercise_sets_details.text = getString(R.string.sets_text, sets!!.toInt())
+        exercise_weight_details.text = getString(R.string.weight_text, weight!!.toInt())
+        exercise_goal_details.text = getString(R.string.weight_goal_text, goal!!.toInt())
+
+
+        if (weight == start) {
+            exercise_details_progress_bar.progress = 0
+            exercise_details_progress_percentage.text = "0%"
+        }
+        else {
+            val percentage = calculateProgress(start!!.toLong(), weight.toLong(), goal.toLong())
+            exercise_details_progress_bar.progress = percentage
+            exercise_details_progress_percentage.text = getString(R.string.percentage_text, percentage)
+        }
     }
+
+
 }

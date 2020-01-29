@@ -1,10 +1,7 @@
 package com.example.myapplication.exercise
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
@@ -12,29 +9,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.DashboardActivity
-import com.example.myapplication.DataBaseHandler
 import com.example.myapplication.R
-import kotlinx.android.synthetic.main.exercise_card_view_layout.*
-import kotlinx.android.synthetic.main.exercise_details_layout.view.*
+import com.example.myapplication.entities.Exercise
 import kotlinx.android.synthetic.main.exercise_main_layout.*
 import kotlinx.android.synthetic.main.exercise_new_dialog.view.*
 import kotlinx.android.synthetic.main.toolbar.*
-import java.text.FieldPosition
 
 class ExerciseActivity : AppCompatActivity() {
 
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var itemTouchHelperCallBack: ItemTouchHelper.SimpleCallback
+    private lateinit var mProgressBar : ProgressBar
+
     private lateinit var deleteIcon: Drawable
     private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
 
@@ -45,7 +39,7 @@ class ExerciseActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = getString(R.string.exercise_title)
 
-        val db = DataBaseHandler(this)
+        val db = ExerciseDataBaseHandler(this)
         val exerciseData = ArrayList<Exercise>()
         // deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_black_24dp)!!
 
@@ -67,7 +61,7 @@ class ExerciseActivity : AppCompatActivity() {
             exerciseData.add(data[i])
         }
 
-        viewAdapter = ExerciseAdapter(exerciseData)
+        viewAdapter = ExerciseActivityAdapter(exerciseData, this@ExerciseActivity)
         viewManager = LinearLayoutManager(this)
 
         findViewById<RecyclerView>(R.id.recycler_view_exercises).apply {
@@ -85,60 +79,69 @@ class ExerciseActivity : AppCompatActivity() {
 
     }
 
-    private fun swipeFunctionality(db : DataBaseHandler) : ItemTouchHelper.SimpleCallback {
+    private fun swipeFunctionality(db: ExerciseDataBaseHandler): ItemTouchHelper.SimpleCallback {
 
-        itemTouchHelperCallBack = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
-                val exerciseName = (viewAdapter as ExerciseAdapter).removeExerciseItem(viewHolder, db)
-                db.deleteExerciseData(exerciseName)
-            }
-
-
-            //ICON NOT BEING DRAWN CORRECTLY
-            /*override fun onChildDraw(
-                c: Canvas,
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                dX: Float,
-                dY: Float,
-                actionState: Int,
-                isCurrentlyActive: Boolean
-            ) {
-                val itemView = viewHolder.itemView
-                val iconMargin = (itemView.height - deleteIcon.intrinsicHeight) / 2
-
-                if (dX > 0) {
-                    swipeBackground.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
-                    deleteIcon.setBounds(
-                        itemView.left + iconMargin,
-                        itemView.top + iconMargin,
-                        itemView.right + iconMargin + deleteIcon.intrinsicWidth,
-                        itemView.bottom - iconMargin)
+        itemTouchHelperCallBack =
+            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false
                 }
 
-                swipeBackground.draw(c)
-                c.save()
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
+                    val exerciseName =
+                        (viewAdapter as ExerciseActivityAdapter).removeExerciseItem(viewHolder, db)
+                    db.deleteExerciseData(exerciseName)
+                }
 
-                if (dX > 0) c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
-                deleteIcon.draw(c)
-                c.restore()
 
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-            }*/
-        }
+                //ICON NOT BEING DRAWN CORRECTLY
+                /*override fun onChildDraw(
+                    c: Canvas,
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    dX: Float,
+                    dY: Float,
+                    actionState: Int,
+                    isCurrentlyActive: Boolean
+                ) {
+                    val itemView = viewHolder.itemView
+                    val iconMargin = (itemView.height - deleteIcon.intrinsicHeight) / 2
+
+                    if (dX > 0) {
+                        swipeBackground.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                        deleteIcon.setBounds(
+                            itemView.left + iconMargin,
+                            itemView.top + iconMargin,
+                            itemView.right + iconMargin + deleteIcon.intrinsicWidth,
+                            itemView.bottom - iconMargin)
+                    }
+
+                    swipeBackground.draw(c)
+                    c.save()
+
+                    if (dX > 0) c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                    deleteIcon.draw(c)
+                    c.restore()
+
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                }*/
+            }
         return itemTouchHelperCallBack
     }
 
-    private fun addNewExerciseFunctionality(data : ArrayList<Exercise>, db : DataBaseHandler) {
+    private fun addNewExerciseFunctionality(
+        data: ArrayList<Exercise>,
+        db: ExerciseDataBaseHandler
+    ) {
 
         add_exercise_button.setOnClickListener {
             //inflate the dialog with custom view
-            val mExerciseDialogView = LayoutInflater.from(this).inflate(R.layout.exercise_new_dialog, null)
+            val mExerciseDialogView =
+                LayoutInflater.from(this).inflate(R.layout.exercise_new_dialog, null)
 
             //AlertDialogBuilder
             val mBuilder = AlertDialog.Builder(this)
@@ -150,7 +153,10 @@ class ExerciseActivity : AppCompatActivity() {
                 if (!mExerciseDialogView.new_exercise_title_input.text.isBlank() &&
                     !mExerciseDialogView.new_exercise_description_input.text.isBlank() &&
                     !mExerciseDialogView.new_exercise_repetition_input.text.isBlank() &&
-                    !mExerciseDialogView.new_exercise_sets_input.text.isBlank()) {
+                    !mExerciseDialogView.new_exercise_sets_input.text.isBlank() &&
+                    !mExerciseDialogView.new_exercise_weight_input.text.isBlank() &&
+                    !mExerciseDialogView.new_exercise_goal_input.text.isBlank()
+                ) {
 
                     mAlertDialog.dismiss()
 
@@ -158,14 +164,18 @@ class ExerciseActivity : AppCompatActivity() {
                     val description = mExerciseDialogView.new_exercise_description_input.text.toString()
                     val repetitions = mExerciseDialogView.new_exercise_repetition_input.text.toString()
                     val sets = mExerciseDialogView.new_exercise_sets_input.text.toString()
+                    val weight = mExerciseDialogView.new_exercise_weight_input.text.toString()
+                    val weightGoal = mExerciseDialogView.new_exercise_goal_input.text.toString()
 
                     //add input to data array for display
                     val exercise = Exercise(
-                        0,
                         title,
                         description,
                         repetitions.toLong(),
-                        sets.toLong())
+                        sets.toLong(),
+                        weight.toLong(),
+                        weightGoal.toLong()
+                    )
 
                     db.insertExerciseData(exercise)
                     updateViewData(db, data)
@@ -181,7 +191,7 @@ class ExerciseActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateViewData(db: DataBaseHandler, myPermData : ArrayList<Exercise>) {
+    private fun updateViewData(db: ExerciseDataBaseHandler, myPermData: ArrayList<Exercise>) {
         val data = db.readExerciseData()
         var added = 0
 
@@ -199,9 +209,8 @@ class ExerciseActivity : AppCompatActivity() {
         }
         //update display
         findViewById<RecyclerView>(R.id.recycler_view_exercises).apply {
-            adapter = ExerciseAdapter(myPermData)
+            adapter = ExerciseActivityAdapter(myPermData, this@ExerciseActivity)
         }
-
     }
 
 

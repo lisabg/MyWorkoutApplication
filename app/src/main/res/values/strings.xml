@@ -25,12 +25,21 @@
         <item>oz</item>
     </string-array>
 
+    <string name="percentage_text">%1$d%%</string>
+    <string name="repetition_text">Repetition: %1$d</string>
+    <string name="sets_text">Sets: %1$d</string>
+    <string name="seconds_text">Seconds: %1$d</string>
+    <string name="seconds_goal_text">Seconds goal: %1$d</string>
+    <string name="weight_text">Weight: %1$d</string>
+    <string name="weight_goal_text">Weight goal: %1$d</string>
 
     <string name="exercise_title">Exercises</string>
     <string name="exercise_title_hint">Exercise name</string>
     <string name="exercise_description_hint">Exercise description</string>
     <string name="exercise_repetition_hint">Repetitions in one set</string>
     <string name="exercise_sets_hint">Number of sets</string>
+    <string name="exercise_weight_hint">Weight</string>
+    <string name="exercise_goal_hint">Weight goal</string>
     <string name="exercise_dialog_box_title">Add Exercise</string>
     <string name="exercise_edit_dialog_box_title">Edit Exercise</string>
     <string name="exercise_details_dialog_box_title">Exercise Details</string>
@@ -40,6 +49,7 @@
     <string name="stretch_description_hint">Stretch description</string>
     <string name="stretch_time_hint">Seconds to hold one sett</string>
     <string name="stretch_sets_hint">Number of sets</string>
+    <string name="stretch_goal_hint">Goal seconds</string>
     <string name="stretch_dialog_box_title">Add Stretch</string>
     <string name="stretch_edit_dialog_box_title">Edit Stretch</string>
     <string name="stretch_details_dialog_box_title">Stretch Details</string>

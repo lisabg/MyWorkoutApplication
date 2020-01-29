@@ -1,11 +1,15 @@
 package com.example.myapplication.stretch
 
-import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -13,8 +17,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.DashboardActivity
-import com.example.myapplication.DataBaseHandler
 import com.example.myapplication.R
+import com.example.myapplication.activityObersvers.StretchActivityObserver
+import com.example.myapplication.entities.Stretch
 import kotlinx.android.synthetic.main.stretch_main_layout.*
 import kotlinx.android.synthetic.main.stretch_new_dialog.view.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -25,16 +30,23 @@ class StretchActivity : AppCompatActivity() {
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var itemTouchHelperCallBack: ItemTouchHelper.SimpleCallback
+    private lateinit var mProgressBar : ProgressBar
+    private val TAG = javaClass.simpleName
 
+    private lateinit var deleteIcon: Drawable
+    private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.stretch_main_layout)
 
+        Log.i(TAG, "Owner ON_CREATE")
+        lifecycle.addObserver(StretchActivityObserver())
+
         setSupportActionBar(toolbar)
         toolbar.title = getString(R.string.stretch_title)
 
-        val db = DataBaseHandler(this)
+        val db = StretchDataBaseHandler(this)
         val stretchData = ArrayList<Stretch>()
 
 /*        stretchData.add(
@@ -55,7 +67,7 @@ class StretchActivity : AppCompatActivity() {
             stretchData.add(data[i])
         }
 
-        viewAdapter = StretchAdapter(stretchData)
+        viewAdapter = StretchActivityAdapter(stretchData, this@StretchActivity)
         viewManager = LinearLayoutManager(this)
 
         findViewById<RecyclerView>(R.id.recycler_view_stretches).apply {
@@ -64,7 +76,7 @@ class StretchActivity : AppCompatActivity() {
             setHasFixedSize(true)
 
             layoutManager = viewManager
-            adapter = StretchAdapter(stretchData)
+            adapter = StretchActivityAdapter(stretchData, this@StretchActivity)
         }
 
         addNewStretchFunctionality(stretchData, db)
@@ -73,7 +85,7 @@ class StretchActivity : AppCompatActivity() {
         itemTouchHelper.attachToRecyclerView(recycler_view_stretches)
     }
 
-    private fun swipeFunctionality(db : DataBaseHandler) : ItemTouchHelper.SimpleCallback {
+    private fun swipeFunctionality(db : StretchDataBaseHandler) : ItemTouchHelper.SimpleCallback {
 
         itemTouchHelperCallBack = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder
@@ -82,7 +94,7 @@ class StretchActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
-                val stretchObject = (viewAdapter as StretchAdapter).removeStretchItem(viewHolder, db)
+                val stretchObject = (viewAdapter as StretchActivityAdapter).removeStretchItem(viewHolder, db)
                 db.deleteStretchData(stretchObject)
             }
 
@@ -121,7 +133,7 @@ class StretchActivity : AppCompatActivity() {
         return itemTouchHelperCallBack
     }
 
-    private fun addNewStretchFunctionality(data : ArrayList<Stretch>, db : DataBaseHandler) {
+    private fun addNewStretchFunctionality(data : ArrayList<Stretch>, db : StretchDataBaseHandler) {
 
         add_stretch_button.setOnClickListener {
             //inflate the dialog with custom view
@@ -137,6 +149,7 @@ class StretchActivity : AppCompatActivity() {
                 if (!mStretchDialogView.new_stretch_title_input.text.isBlank() &&
                     !mStretchDialogView.new_stretch_description_input.text.isBlank() &&
                     !mStretchDialogView.new_stretch_time_input.text.isBlank() &&
+                    !mStretchDialogView.new_stretch_goal_input.text.isBlank() &&
                     !mStretchDialogView.new_stretch_sets_input.text.isBlank()) {
 
                     mAlertDialog.dismiss()
@@ -144,15 +157,17 @@ class StretchActivity : AppCompatActivity() {
                     val title = mStretchDialogView.new_stretch_title_input.text.toString()
                     val description = mStretchDialogView.new_stretch_description_input.text.toString()
                     val seconds = mStretchDialogView.new_stretch_time_input.text.toString()
+                    val goal = mStretchDialogView.new_stretch_goal_input.text.toString()
                     val sets = mStretchDialogView.new_stretch_sets_input.text.toString()
 
                     //add input to data array for display
                     val stretch = Stretch(
-                        0,
                         title,
                         description,
                         seconds.toLong(),
-                        sets.toLong())
+                        sets.toLong(),
+                        goal.toLong()
+                    )
 
                     db.insertStretchData(stretch)
                     updateViewData(db, data)
@@ -169,7 +184,7 @@ class StretchActivity : AppCompatActivity() {
 
     }
 
-    fun updateViewData(db: DataBaseHandler, myData : ArrayList<Stretch>) {
+    fun updateViewData(db: StretchDataBaseHandler, myData : ArrayList<Stretch>) {
         val data = db.readStretchData()
         var added = 0
 
@@ -187,7 +202,7 @@ class StretchActivity : AppCompatActivity() {
         }
         //update display
         findViewById<RecyclerView>(R.id.recycler_view_stretches).apply {
-            adapter = StretchAdapter(myData)
+            adapter = StretchActivityAdapter(myData, this@StretchActivity)
         }
     }
 

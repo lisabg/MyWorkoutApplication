@@ -1,24 +1,26 @@
 package com.example.myapplication.stretch
 
+import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.DataBaseHandler
 import com.example.myapplication.R
-import com.example.myapplication.exercise.ExerciseDetailsActivity
+import com.example.myapplication.entities.Stretch
+import com.example.myapplication.entities.calculateProgress
 import com.google.android.material.snackbar.Snackbar
 
-class StretchAdapter(private val stretchList: ArrayList<Stretch>) :
-    RecyclerView.Adapter<StretchAdapter.MyViewHolder>() {
+class StretchActivityAdapter(private val stretchList: ArrayList<Stretch>, val context: Context) :
+    RecyclerView.Adapter<StretchActivityAdapter.MyViewHolder>() {
 
     private var removedPosition : Int = 0
-    private var removedItem : Stretch = Stretch()
+    private var removedItem : Stretch =
+        Stretch("", "", 0, 0, 0)
 
 
     // Create new views (invoked by the layout manager)
@@ -34,16 +36,26 @@ class StretchAdapter(private val stretchList: ArrayList<Stretch>) :
         // - replace the contents of the view with that element
         val stretch: Stretch = stretchList[position]
 
-        val time = "Seconds: " + stretch.seconds
+        val seconds = "Seconds: " + stretch.seconds
         val sets = "Sets: " + stretch.sets
 
         holder.stretchName.text = stretch.name
-        holder.stretchTime.text = time
+        holder.stretchTime.text = seconds
         holder.stretchSets.text = sets
 
+        if (stretch.seconds == stretch.secondsStart) {
+            holder.progressBar.progress = 0
+            holder.progressPercentage.text = "0%"
+        }
+        else {
+            val percentage = calculateProgress(stretch.secondsStart, stretch.seconds, stretch.secondsGoal)
+            holder.progressBar.progress = percentage
+            holder.progressPercentage.text = context.getString(R.string.percentage_text, percentage)
+        }
     }
 
-    fun removeStretchItem(viewHolder: RecyclerView.ViewHolder, db: DataBaseHandler) : String{
+
+    fun removeStretchItem(viewHolder: RecyclerView.ViewHolder, db: StretchDataBaseHandler) : String{
         removedPosition = viewHolder.adapterPosition
         removedItem = stretchList[viewHolder.adapterPosition]
 
@@ -76,6 +88,8 @@ class StretchAdapter(private val stretchList: ArrayList<Stretch>) :
         val stretchName = itemView.findViewById(R.id.stretch_name_id) as TextView
         val stretchTime = itemView.findViewById(R.id.stretch_time_id) as TextView
         val stretchSets = itemView.findViewById(R.id.stretch_sets_id) as TextView
+        val progressBar = itemView.findViewById(R.id.stretch_card_view_progress_bar) as ProgressBar
+        val progressPercentage = itemView.findViewById(R.id.stretch_card_view_progress_percentage) as TextView
 
         override fun onClick(p0: View?) {
 
@@ -90,8 +104,10 @@ class StretchAdapter(private val stretchList: ArrayList<Stretch>) :
             intent.putExtra("id", stretch.id.toString())
             intent.putExtra("name", stretch.name)
             intent.putExtra("description", stretch.description)
-            intent.putExtra("time", stretch.seconds.toString())
+            intent.putExtra("seconds", stretch.seconds.toString())
             intent.putExtra("sets", stretch.sets.toString())
+            intent.putExtra("start", stretch.secondsStart.toString())
+            intent.putExtra("goal", stretch.secondsGoal.toString())
 
             startActivity(itemView.context, intent, null)
         }
@@ -101,8 +117,9 @@ class StretchAdapter(private val stretchList: ArrayList<Stretch>) :
             for (e in stretchList) {
                 if (e.name == name) return e
             }
-            return Stretch(-1, "", "", 0, 0)
+            return Stretch("", "", 0, 0, 0)
         }
+
 
     }
 }

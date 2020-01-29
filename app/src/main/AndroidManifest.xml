@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         package="com.example.myapplication">
 
     <application
@@ -8,22 +9,50 @@
             android:label="Workout"
             android:roundIcon="@mipmap/ic_launcher_workout_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme">
-        <activity android:name=".stretch.StretchDetailsActivity" />
-        <activity android:name=".exercise.ExerciseDetailsActivity" />
-        <activity android:name=".stretch.StretchActivity" />
-        <activity android:name=".exercise.ExerciseActivity" />
-        <activity android:name=".converter.ConverterActivity" />
-        <activity android:name=".DashboardActivity" />
+            android:theme="@style/AppTheme"
+            tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+
+        <activity
+                android:name=".stretch.StretchDetailsActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait"/>
+
+        <activity
+                android:name=".exercise.ExerciseDetailsActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait"/>
+
+        <activity
+                android:name=".stretch.StretchActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait"/>
+
+        <activity
+                android:name=".exercise.ExerciseActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait"/>
+
+        <activity
+                android:name=".converter.ConverterActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait"/>
+
+        <activity
+                android:name=".DashboardActivity"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait"/>
+
         <activity
                 android:name=".SplashScreenActivity"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:theme="@style/AppTheme.NoActionBar"
+                android:configChanges="orientation"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+    </application>
 </manifest>
