@@ -12,6 +12,6 @@ data class Stretch(
     var id : Int = 0
     var secondsStart: Long = 0
 
-    var progressHistory = mutableListOf<String>()
+    var progressHistory = mutableListOf<Long>()
 
 }

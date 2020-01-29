@@ -8,15 +8,22 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.entities.Exercise
 import com.example.myapplication.entities.calculateProgress
+import kotlinx.android.synthetic.main.details_name_description_layout.*
 import kotlinx.android.synthetic.main.exercise_details_layout.*
 import kotlinx.android.synthetic.main.exercise_new_dialog.view.*
+import kotlinx.android.synthetic.main.details_progressbar_layout.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 
 class ExerciseDetailsActivity : AppCompatActivity() {
+
+    private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +53,9 @@ class ExerciseDetailsActivity : AppCompatActivity() {
 
             setEditableValues(mExerciseDialogView)
 
-            mExerciseDialogView.add_exercise_submit_button.setOnClickListener {
+            val currentWeight = mExerciseDialogView.new_exercise_weight_input.text.toString()
+
+                mExerciseDialogView.add_exercise_submit_button.setOnClickListener {
                 if (!mExerciseDialogView.new_exercise_title_input.text.isBlank() &&
                     !mExerciseDialogView.new_exercise_description_input.text.isBlank() &&
                     !mExerciseDialogView.new_exercise_repetition_input.text.isBlank() &&
@@ -81,6 +90,10 @@ class ExerciseDetailsActivity : AppCompatActivity() {
 
                     exercise.id = id
 
+                    if (currentWeight != weight) {
+                        db.insertWeightHistory(id, currentWeight.toLong())
+                    }
+
                     db.updateExerciseData(exercise)
 
                     Toast.makeText(this, "Exercise updated", Toast.LENGTH_SHORT).show()
@@ -113,6 +126,7 @@ class ExerciseDetailsActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
+        val id = intent.extras?.getString("id")!!.toInt()
         val name = intent.extras?.getString("name")
         val description = intent.extras?.getString("description")
         val repetitions = intent.extras?.getString("repetition")
@@ -122,24 +136,42 @@ class ExerciseDetailsActivity : AppCompatActivity() {
         val start = intent.extras?.getString("start")
 
 
-        exercise_name_details.text = name
-        exercise_description_details.text = description
+        details_name.text = name
+        details_description.text = description
         exercise_repetition_details.text = getString(R.string.repetition_text, repetitions!!.toInt())
         exercise_sets_details.text = getString(R.string.sets_text, sets!!.toInt())
         exercise_weight_details.text = getString(R.string.weight_text, weight!!.toInt())
-        exercise_goal_details.text = getString(R.string.weight_goal_text, goal!!.toInt())
+        exercise_goal_details.text = getString(R.string.goal_text, goal!!.toInt())
 
+        //fetchHistory(id)
 
         if (weight == start) {
-            exercise_details_progress_bar.progress = 0
-            exercise_details_progress_percentage.text = "0%"
+            details_progress_bar.progress = 0
+            details_progress_percentage.text = "0%"
         }
         else {
             val percentage = calculateProgress(start!!.toLong(), weight.toLong(), goal.toLong())
-            exercise_details_progress_bar.progress = percentage
-            exercise_details_progress_percentage.text = getString(R.string.percentage_text, percentage)
+            details_progress_bar.progress = percentage
+            details_progress_percentage.text = getString(R.string.percentage_text, percentage)
         }
     }
 
+    private fun fetchHistory(id: Int) {
+
+        val db = ExerciseDataBaseHandler(this)
+        val history = db.readExerciseHistoryData(id)
+
+        viewAdapter = ExerciseDetailsRecyclerViewAdapter(history)
+        viewManager = LinearLayoutManager(this)
+
+        findViewById<RecyclerView>(R.id.details_recycler_view).apply {
+            // use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
+            setHasFixedSize(true)
+
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
+
+    }
 
 }

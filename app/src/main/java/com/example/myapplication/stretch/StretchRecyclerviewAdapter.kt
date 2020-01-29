@@ -15,8 +15,8 @@ import com.example.myapplication.entities.Stretch
 import com.example.myapplication.entities.calculateProgress
 import com.google.android.material.snackbar.Snackbar
 
-class StretchActivityAdapter(private val stretchList: ArrayList<Stretch>, val context: Context) :
-    RecyclerView.Adapter<StretchActivityAdapter.MyViewHolder>() {
+class StretchRecyclerviewAdapter(private val stretchList: ArrayList<Stretch>, val context: Context) :
+    RecyclerView.Adapter<StretchRecyclerviewAdapter.MyViewHolder>() {
 
     private var removedPosition : Int = 0
     private var removedItem : Stretch =

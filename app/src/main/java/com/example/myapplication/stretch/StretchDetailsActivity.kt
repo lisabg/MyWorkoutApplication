@@ -11,6 +11,8 @@ import androidx.appcompat.app.AlertDialog
 import com.example.myapplication.R
 import com.example.myapplication.entities.Stretch
 import com.example.myapplication.entities.calculateProgress
+import kotlinx.android.synthetic.main.details_name_description_layout.*
+import kotlinx.android.synthetic.main.details_progressbar_layout.*
 import kotlinx.android.synthetic.main.stretch_details_layout.*
 import kotlinx.android.synthetic.main.stretch_new_dialog.view.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -114,20 +116,20 @@ class StretchDetailsActivity : AppCompatActivity() {
         val goal = intent.extras?.getString("goal")
         val start = intent.extras?.getString("start")
 
-        stretch_name_details.text = name
-        stretch_description_details.text = description
+        details_name.text = name
+        details_description.text = description
         stretch_seconds_details.text = getString(R.string.seconds_text, seconds!!.toInt())
         stretch_sets_details.text = getString(R.string.sets_text, sets!!.toInt())
-        stretch_goal_details.text = getString(R.string.seconds_goal_text, goal!!.toInt())
+        stretch_goal_details.text = getString(R.string.goal_text, goal!!.toInt())
 
         if (seconds == start) {
-            stretch_details_progress_bar.progress = 0
-            stretch_details_progress_percentage.text = "0%"
+            details_progress_bar.progress = 0
+            details_progress_percentage.text = "0%"
         }
         else {
             val percentage = calculateProgress(start!!.toLong(), seconds.toLong(), goal.toLong())
-            stretch_details_progress_bar.progress = percentage
-            stretch_details_progress_percentage.text = getString(R.string.percentage_text, percentage)
+            details_progress_bar.progress = percentage
+            details_progress_percentage.text = getString(R.string.percentage_text, percentage)
         }
 
     }

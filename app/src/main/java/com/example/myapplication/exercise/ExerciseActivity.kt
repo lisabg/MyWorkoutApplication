@@ -27,7 +27,6 @@ class ExerciseActivity : AppCompatActivity() {
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var itemTouchHelperCallBack: ItemTouchHelper.SimpleCallback
-    private lateinit var mProgressBar : ProgressBar
 
     private lateinit var deleteIcon: Drawable
     private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
@@ -43,25 +42,13 @@ class ExerciseActivity : AppCompatActivity() {
         val exerciseData = ArrayList<Exercise>()
         // deleteIcon = ContextCompat.getDrawable(this, R.drawable.ic_delete_black_24dp)!!
 
-/*        exerciseData.add(
-            Exercise(
-                0, "Plank", "Place the palm of your hands on the floor centering your hands straight " +
-                        "under your shoulders, place your feet so that your body is parallell to the ground and you " +
-                        "are standing on your toes.", 30, 3
-            ))
-        exerciseData.add(
-            Exercise(
-                0, "Push-ups", "Start in a plank-position with your hands in a wider stans" +
-                        "than your shoulders. Lower yourself as far as possible and then push back up.",
-                10, 3
-            ))*/
 
         val data = db.readExerciseData()
         for (i in 0 until (data.size)) {
             exerciseData.add(data[i])
         }
 
-        viewAdapter = ExerciseActivityAdapter(exerciseData, this@ExerciseActivity)
+        viewAdapter = ExerciseRecyclerViewAdapter(exerciseData, this@ExerciseActivity)
         viewManager = LinearLayoutManager(this)
 
         findViewById<RecyclerView>(R.id.recycler_view_exercises).apply {
@@ -93,7 +80,7 @@ class ExerciseActivity : AppCompatActivity() {
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
                     val exerciseName =
-                        (viewAdapter as ExerciseActivityAdapter).removeExerciseItem(viewHolder, db)
+                        (viewAdapter as ExerciseRecyclerViewAdapter).removeExerciseItem(viewHolder, db)
                     db.deleteExerciseData(exerciseName)
                 }
 
@@ -209,7 +196,7 @@ class ExerciseActivity : AppCompatActivity() {
         }
         //update display
         findViewById<RecyclerView>(R.id.recycler_view_exercises).apply {
-            adapter = ExerciseActivityAdapter(myPermData, this@ExerciseActivity)
+            adapter = ExerciseRecyclerViewAdapter(myPermData, this@ExerciseActivity)
         }
     }
 

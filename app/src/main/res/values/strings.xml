@@ -29,9 +29,9 @@
     <string name="repetition_text">Repetition: %1$d</string>
     <string name="sets_text">Sets: %1$d</string>
     <string name="seconds_text">Seconds: %1$d</string>
-    <string name="seconds_goal_text">Seconds goal: %1$d</string>
     <string name="weight_text">Weight: %1$d</string>
-    <string name="weight_goal_text">Weight goal: %1$d</string>
+    <string name="goal_text">Goal: %1$d</string>
+    <string name="goal_history_title">Goal history</string>
 
     <string name="exercise_title">Exercises</string>
     <string name="exercise_title_hint">Exercise name</string>

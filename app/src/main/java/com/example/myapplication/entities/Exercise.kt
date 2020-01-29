@@ -12,6 +12,6 @@ data class Exercise(
     var id : Int = 0
     var weightStart: Long = 0
 
-    var progressHistory = mutableListOf<String>()
+    var progressHistory = mutableListOf<Long>()
 
 }

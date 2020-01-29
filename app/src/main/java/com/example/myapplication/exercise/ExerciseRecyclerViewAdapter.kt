@@ -15,8 +15,8 @@ import com.example.myapplication.entities.Exercise
 import com.example.myapplication.entities.calculateProgress
 import com.google.android.material.snackbar.Snackbar
 
-class ExerciseActivityAdapter(private val exerciseList: ArrayList<Exercise>, val context: Context) :
-    RecyclerView.Adapter<ExerciseActivityAdapter.MyViewHolder>() {
+class ExerciseRecyclerViewAdapter(private val exerciseList: ArrayList<Exercise>, val context: Context) :
+    RecyclerView.Adapter<ExerciseRecyclerViewAdapter.MyViewHolder>() {
 
     private var removedPosition : Int = 0
     private var removedItem: Exercise =

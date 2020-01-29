@@ -30,7 +30,6 @@ class StretchActivity : AppCompatActivity() {
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var itemTouchHelperCallBack: ItemTouchHelper.SimpleCallback
-    private lateinit var mProgressBar : ProgressBar
     private val TAG = javaClass.simpleName
 
     private lateinit var deleteIcon: Drawable
@@ -49,25 +48,13 @@ class StretchActivity : AppCompatActivity() {
         val db = StretchDataBaseHandler(this)
         val stretchData = ArrayList<Stretch>()
 
-/*        stretchData.add(
-            Stretch(
-                0, "Downward facing dog", "Place the palm of your hands on the floor centering your hands straight " +
-                        "under your shoulders, place your feet flat on the ground. Try to straighten both your elbows and knees" +
-                        "pushing your bottom towards the sky.", 30, 3
-            ))
-        stretchData.add(
-            Stretch(
-                0 , "Shoulder stretch", "Stretch and point one arm straight up towards the sky, then bend " +
-                        "the elbow and reach your hand down towards your back. Your other hand may help push your bent" +
-                        "elbow backwards.", 10, 3
-            ))*/
 
         val data = db.readStretchData()
         for (i in 0 until (data.size)) {
             stretchData.add(data[i])
         }
 
-        viewAdapter = StretchActivityAdapter(stretchData, this@StretchActivity)
+        viewAdapter = StretchRecyclerviewAdapter(stretchData, this@StretchActivity)
         viewManager = LinearLayoutManager(this)
 
         findViewById<RecyclerView>(R.id.recycler_view_stretches).apply {
@@ -76,7 +63,7 @@ class StretchActivity : AppCompatActivity() {
             setHasFixedSize(true)
 
             layoutManager = viewManager
-            adapter = StretchActivityAdapter(stretchData, this@StretchActivity)
+            adapter = StretchRecyclerviewAdapter(stretchData, this@StretchActivity)
         }
 
         addNewStretchFunctionality(stretchData, db)
@@ -94,7 +81,7 @@ class StretchActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
-                val stretchObject = (viewAdapter as StretchActivityAdapter).removeStretchItem(viewHolder, db)
+                val stretchObject = (viewAdapter as StretchRecyclerviewAdapter).removeStretchItem(viewHolder, db)
                 db.deleteStretchData(stretchObject)
             }
 
@@ -202,7 +189,7 @@ class StretchActivity : AppCompatActivity() {
         }
         //update display
         findViewById<RecyclerView>(R.id.recycler_view_stretches).apply {
-            adapter = StretchActivityAdapter(myData, this@StretchActivity)
+            adapter = StretchRecyclerviewAdapter(myData, this@StretchActivity)
         }
     }
 

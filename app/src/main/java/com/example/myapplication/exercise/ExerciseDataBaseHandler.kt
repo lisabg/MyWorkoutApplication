@@ -10,7 +10,7 @@ import android.widget.Toast
 import com.example.myapplication.entities.Exercise
 
 val DATABASE_NAME = "MyExerciseDataBase"
-val DATABASE_VERSION = 4
+val DATABASE_VERSION = 5
 
 val EX_TABLE_NAME = "Exercises"
 val EX_COL_ID = "id"
@@ -23,6 +23,10 @@ val EX_COL_WEIGHT = "weight"
 
 val EX_COL_WEIGHT_START = "weight_start"
 val EX_COL_WEIGHT_GOAL = "weight_goal"
+
+val EX_HIST_TABLE_NAME = "Exercise_history"
+val EX_HIST_COL_ID = "exercise_id"
+val EX_HIST_COL_WEIGHT = "weight"
 
 class ExerciseDataBaseHandler(val context: Context) : SQLiteOpenHelper(
     context,
@@ -44,20 +48,28 @@ class ExerciseDataBaseHandler(val context: Context) : SQLiteOpenHelper(
                 EX_COL_SETS + " LONG, " +
                 EX_COL_WEIGHT + " LONG, " +
                 EX_COL_WEIGHT_START + " LONG, " +
-                EX_COL_WEIGHT_GOAL + " LONG" + ");")
+                EX_COL_WEIGHT_GOAL + " LONG" +
+                ");")
+
+        val createHistTable = ("CREATE TABLE " + EX_HIST_TABLE_NAME + "(" +
+                EX_HIST_COL_ID + " INTEGER PRIMARY KEY, " +
+                EX_HIST_COL_WEIGHT + " LONG, " +
+                "FOREIGN KEY (" + EX_HIST_COL_ID + ") REFERENCES " + EX_TABLE_NAME + " (" + EX_COL_ID + ")" +
+                ");")
 
         p0?.execSQL(createExTable)
+        p0?.execSQL(createHistTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.run {
             execSQL("DROP TABLE IF EXISTS " + EX_TABLE_NAME)
+            execSQL("DROP TABLE IF EXISTS " + EX_HIST_TABLE_NAME)
         }
 
         onCreate(db)
     }
 
-    // Exercise functions
     fun insertExerciseData(exercise: Exercise) {
         val db = this.writableDatabase
         val cv = ContentValues()
@@ -74,6 +86,16 @@ class ExerciseDataBaseHandler(val context: Context) : SQLiteOpenHelper(
 //        if (result == (-1).toLong()) {
 //            Toast.makeText(context, "DB Failed", Toast.LENGTH_SHORT).show()
 //        } else Toast.makeText(context, "DB Success", Toast.LENGTH_SHORT).show()
+    }
+
+    fun insertWeightHistory(id: Int, weight: Long) {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+
+        cv.put(EX_HIST_COL_ID, id)
+        cv.put(EX_HIST_COL_WEIGHT, weight)
+
+        db.insert(EX_HIST_TABLE_NAME, null, cv)
     }
 
     fun readExerciseData(): MutableList<Exercise> {
@@ -98,6 +120,24 @@ class ExerciseDataBaseHandler(val context: Context) : SQLiteOpenHelper(
                 exercise.weightStart = result.getString(result.getColumnIndex(EX_COL_WEIGHT_START)).toLong()
 
                 list.add(exercise)
+            } while (result.moveToNext())
+        }
+
+        result.close()
+        db.close()
+        return list
+    }
+
+    fun readExerciseHistoryData(id: Int): ArrayList<Long> {
+        val list: ArrayList<Long> = ArrayList()
+
+        val db = this.readableDatabase
+        val query = "Select * from $EX_HIST_TABLE_NAME where $EX_HIST_COL_ID = $id"
+        val result = db.rawQuery(query, null)
+
+        if (result.moveToFirst()) {
+            do {
+                list.add(result.getString(result.getColumnIndex(EX_COL_WEIGHT_START)).toLong())
             } while (result.moveToNext())
         }
 
@@ -135,8 +175,6 @@ class ExerciseDataBaseHandler(val context: Context) : SQLiteOpenHelper(
         db.close()
         return result
     }
-
-    // Stretch functions
 
 
     fun logUpdatedExercise() {
