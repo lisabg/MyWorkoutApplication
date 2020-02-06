@@ -27,7 +27,6 @@
             android:text="@string/converter_title"
             app:layout_constraintBottom_toTopOf="@+id/textView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
@@ -41,7 +40,6 @@
             android:text="@string/converter_title"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,7 +55,6 @@
             android:src="@drawable/converter_clipart"
             android:text="@string/converter_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -69,7 +66,6 @@
             android:text="@string/stretch_title"
             app:layout_constraintBottom_toTopOf="@+id/dashboard_exercises_button"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -79,7 +75,6 @@
             android:layout_marginTop="4dp"
             android:text="@string/exercise_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dashboard_exercises_button" />
 
@@ -90,7 +85,6 @@
             android:layout_marginTop="4dp"
             android:text="@string/converter_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dashboard_converter_button" />
 

@@ -19,8 +19,7 @@ class StretchRecyclerviewAdapter(private val stretchList: ArrayList<Stretch>, va
     RecyclerView.Adapter<StretchRecyclerviewAdapter.MyViewHolder>() {
 
     private var removedPosition : Int = 0
-    private var removedItem : Stretch =
-        Stretch("", "", 0, 0, 0)
+    private var removedItem : Stretch = Stretch("", "", 0, 0, 0)
 
 
     // Create new views (invoked by the layout manager)
@@ -55,12 +54,14 @@ class StretchRecyclerviewAdapter(private val stretchList: ArrayList<Stretch>, va
     }
 
 
-    fun removeStretchItem(viewHolder: RecyclerView.ViewHolder, db: StretchDataBaseHandler) : String{
+    fun removeStretchItem(viewHolder: RecyclerView.ViewHolder, db: StretchDataBaseHandler) {
         removedPosition = viewHolder.adapterPosition
         removedItem = stretchList[viewHolder.adapterPosition]
 
         stretchList.removeAt(viewHolder.adapterPosition)
         notifyItemRemoved(viewHolder.adapterPosition)
+
+        db.deleteStretchData(removedItem.name)
 
         Snackbar.make(viewHolder.itemView, "${removedItem.name} deleted", Snackbar.LENGTH_LONG).setAction("UNDO") {
             stretchList.add(removedPosition, removedItem)
@@ -68,7 +69,6 @@ class StretchRecyclerviewAdapter(private val stretchList: ArrayList<Stretch>, va
             notifyItemInserted(removedPosition)
         }.show()
 
-        return removedItem.name
     }
 
     // Return the size of your data sett (invoked by the layout manager)

@@ -19,8 +19,7 @@ class ExerciseRecyclerViewAdapter(private val exerciseList: ArrayList<Exercise>,
     RecyclerView.Adapter<ExerciseRecyclerViewAdapter.MyViewHolder>() {
 
     private var removedPosition : Int = 0
-    private var removedItem: Exercise =
-        Exercise("", "", 0, 0, 0, 0)
+    private var removedItem: Exercise = Exercise("", "", 0, 0, 0, 0)
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -55,12 +54,14 @@ class ExerciseRecyclerViewAdapter(private val exerciseList: ArrayList<Exercise>,
         }
     }
 
-    fun removeExerciseItem(viewHolder: RecyclerView.ViewHolder, db: ExerciseDataBaseHandler) : String{
+    fun removeExerciseItem(viewHolder: RecyclerView.ViewHolder, db: ExerciseDataBaseHandler) {
         removedPosition = viewHolder.adapterPosition
         removedItem = exerciseList[viewHolder.adapterPosition]
 
         exerciseList.removeAt(viewHolder.adapterPosition)
         notifyItemRemoved(viewHolder.adapterPosition)
+
+        db.deleteExerciseData(removedItem.name)
 
         Snackbar.make(viewHolder.itemView, "${removedItem.name} deleted", Snackbar.LENGTH_LONG).setAction("UNDO") {
             exerciseList.add(removedPosition, removedItem)
@@ -68,7 +69,6 @@ class ExerciseRecyclerViewAdapter(private val exerciseList: ArrayList<Exercise>,
             notifyItemInserted(removedPosition)
         }.show()
 
-        return removedItem.name
     }
 
     // Return the size of your data sett (invoked by the layout manager)

@@ -1,6 +1,7 @@
 package com.example.myapplication.stretch
 
 import android.content.Intent
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -32,7 +33,6 @@ class StretchActivity : AppCompatActivity() {
     private lateinit var itemTouchHelperCallBack: ItemTouchHelper.SimpleCallback
     private val TAG = javaClass.simpleName
 
-    private lateinit var deleteIcon: Drawable
     private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,55 +68,48 @@ class StretchActivity : AppCompatActivity() {
 
         addNewStretchFunctionality(stretchData, db)
 
-        val itemTouchHelper = ItemTouchHelper(swipeFunctionality(db))
+        val itemTouchHelper = ItemTouchHelper(swipeFunctionality(db, stretchData))
         itemTouchHelper.attachToRecyclerView(recycler_view_stretches)
     }
 
-    private fun swipeFunctionality(db : StretchDataBaseHandler) : ItemTouchHelper.SimpleCallback {
+    private fun swipeFunctionality(db: StretchDataBaseHandler, data: ArrayList<Stretch>): ItemTouchHelper.SimpleCallback {
 
-        itemTouchHelperCallBack = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
-                val stretchObject = (viewAdapter as StretchRecyclerviewAdapter).removeStretchItem(viewHolder, db)
-                db.deleteStretchData(stretchObject)
-            }
-
-            //ICON NOT BEING DRAWN CORRECTLY
-            /*override fun onChildDraw(
-                c: Canvas,
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                dX: Float,
-                dY: Float,
-                actionState: Int,
-                isCurrentlyActive: Boolean
-            ) {
-                val itemView = viewHolder.itemView
-                val iconMargin = (itemView.height - deleteIcon.intrinsicHeight) / 2
-
-                if (dX > 0) {
-                    swipeBackground.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
-                    deleteIcon.setBounds(
-                        itemView.left + iconMargin,
-                        itemView.top + iconMargin,
-                        itemView.right + iconMargin + deleteIcon.intrinsicWidth,
-                        itemView.bottom - iconMargin)
+        itemTouchHelperCallBack =
+            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+                override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                    return false
                 }
 
-                swipeBackground.draw(c)
-                c.save()
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
+                    (viewAdapter as StretchRecyclerviewAdapter).removeStretchItem(viewHolder, db)
+                }
 
-                if (dX > 0) c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
-                deleteIcon.draw(c)
-                c.restore()
+/*                override fun onChildDraw(
+                    c: Canvas,
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    dX: Float,
+                    dY: Float,
+                    actionState: Int,
+                    isCurrentlyActive: Boolean
+                ) {
+                    val itemView = viewHolder.itemView
 
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-            }*/
-        }
+                    if (dX > 0) {
+                        swipeBackground.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                    }
+
+                    swipeBackground.draw(c)
+                    c.save()
+
+                    if (dX > 0) {
+                        c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                        c.restore()
+                    }
+
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                }*/
+            }
         return itemTouchHelperCallBack
     }
 
@@ -171,7 +164,7 @@ class StretchActivity : AppCompatActivity() {
 
     }
 
-    fun updateViewData(db: StretchDataBaseHandler, myData : ArrayList<Stretch>) {
+    private fun updateViewData(db: StretchDataBaseHandler, myData : ArrayList<Stretch>) {
         val data = db.readStretchData()
         var added = 0
 
@@ -198,7 +191,6 @@ class StretchActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will

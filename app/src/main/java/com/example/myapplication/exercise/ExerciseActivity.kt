@@ -1,6 +1,7 @@
 package com.example.myapplication.exercise
 
 import android.content.Intent
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
@@ -28,7 +29,6 @@ class ExerciseActivity : AppCompatActivity() {
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var itemTouchHelperCallBack: ItemTouchHelper.SimpleCallback
 
-    private lateinit var deleteIcon: Drawable
     private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,12 +61,12 @@ class ExerciseActivity : AppCompatActivity() {
 
         addNewExerciseFunctionality(exerciseData, db)
 
-        val itemTouchHelper = ItemTouchHelper(swipeFunctionality(db))
+        val itemTouchHelper = ItemTouchHelper(swipeFunctionality(db, exerciseData))
         itemTouchHelper.attachToRecyclerView(recycler_view_exercises)
 
     }
 
-    private fun swipeFunctionality(db: ExerciseDataBaseHandler): ItemTouchHelper.SimpleCallback {
+    private fun swipeFunctionality(db: ExerciseDataBaseHandler, data: ArrayList<Exercise>): ItemTouchHelper.SimpleCallback {
 
         itemTouchHelperCallBack =
             object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -79,14 +79,10 @@ class ExerciseActivity : AppCompatActivity() {
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
-                    val exerciseName =
-                        (viewAdapter as ExerciseRecyclerViewAdapter).removeExerciseItem(viewHolder, db)
-                    db.deleteExerciseData(exerciseName)
+                    (viewAdapter as ExerciseRecyclerViewAdapter).removeExerciseItem(viewHolder, db)
                 }
 
-
-                //ICON NOT BEING DRAWN CORRECTLY
-                /*override fun onChildDraw(
+/*                override fun onChildDraw(
                     c: Canvas,
                     recyclerView: RecyclerView,
                     viewHolder: RecyclerView.ViewHolder,
@@ -96,34 +92,27 @@ class ExerciseActivity : AppCompatActivity() {
                     isCurrentlyActive: Boolean
                 ) {
                     val itemView = viewHolder.itemView
-                    val iconMargin = (itemView.height - deleteIcon.intrinsicHeight) / 2
 
                     if (dX > 0) {
                         swipeBackground.setBounds(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
-                        deleteIcon.setBounds(
-                            itemView.left + iconMargin,
-                            itemView.top + iconMargin,
-                            itemView.right + iconMargin + deleteIcon.intrinsicWidth,
-                            itemView.bottom - iconMargin)
                     }
 
                     swipeBackground.draw(c)
                     c.save()
 
-                    if (dX > 0) c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
-                    deleteIcon.draw(c)
-                    c.restore()
+                    if (dX > 0) {
+                        c.clipRect(itemView.left, itemView.top, dX.toInt(), itemView.bottom)
+                        c.restore()
+                    }
 
                     super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                 }*/
             }
+
         return itemTouchHelperCallBack
     }
 
-    private fun addNewExerciseFunctionality(
-        data: ArrayList<Exercise>,
-        db: ExerciseDataBaseHandler
-    ) {
+    private fun addNewExerciseFunctionality(data: ArrayList<Exercise>, db: ExerciseDataBaseHandler) {
 
         add_exercise_button.setOnClickListener {
             //inflate the dialog with custom view
@@ -200,13 +189,11 @@ class ExerciseActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will

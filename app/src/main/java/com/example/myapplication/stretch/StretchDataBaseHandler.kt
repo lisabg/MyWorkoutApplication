@@ -10,7 +10,7 @@ import android.widget.Toast
 import com.example.myapplication.entities.Stretch
 
 val DATABASE_NAME = "MyStretchDataBase"
-val DATABASE_VERSION = 5
+val DATABASE_VERSION = 6
 
 val ST_TABLE_NAME = "Stretches"
 val ST_COL_ID = "id"
@@ -21,6 +21,11 @@ val ST_COL_SETS = "sets"
 
 val ST_COL_SECONDS_START = "seconds_start"
 val ST_COL_SECONDS_GOAL = "seconds_goal"
+
+val ST_HIST_TABLE_NAME = "Stretch_history"
+val ST_HIST_COL_ID = "id"
+val ST_HIST_COL_EX_ID = "stretch_id"
+val ST_HIST_COL_SECONDS = "seconds"
 
 class StretchDataBaseHandler(val context: Context) : SQLiteOpenHelper(
     context,
@@ -43,12 +48,21 @@ class StretchDataBaseHandler(val context: Context) : SQLiteOpenHelper(
                 ST_COL_SECONDS_START + " LONG, " +
                 ST_COL_SECONDS_GOAL + " LONG" + ");")
 
+        val createHistTable = ("CREATE TABLE " + ST_HIST_TABLE_NAME + "(" +
+                ST_HIST_COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ST_HIST_COL_EX_ID + " INTEGER, " +
+                ST_HIST_COL_SECONDS + " LONG, " +
+                "FOREIGN KEY (" + ST_HIST_COL_EX_ID + ") REFERENCES " + ST_TABLE_NAME + " (" + ST_COL_ID + ")" +
+                ");")
+
         p0?.execSQL(createStTable)
+        p0?.execSQL(createHistTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.run {
             execSQL("DROP TABLE IF EXISTS $ST_TABLE_NAME")
+            execSQL("DROP TABLE IF EXISTS $ST_HIST_TABLE_NAME")
         }
 
         onCreate(db)
@@ -70,6 +84,16 @@ class StretchDataBaseHandler(val context: Context) : SQLiteOpenHelper(
 //        if (result == (-1).toLong()) {
 //            Toast.makeText(context, "DB Failed", Toast.LENGTH_SHORT).show()
 //        } else Toast.makeText(context, "DB Success", Toast.LENGTH_SHORT).show()
+    }
+
+    fun insertSecondsHistory(id: Int, weight: Long) {
+        val db = this.writableDatabase
+        val cv = ContentValues()
+
+        cv.put(ST_HIST_COL_EX_ID, id)
+        cv.put(ST_HIST_COL_SECONDS, weight)
+
+        db.insert(ST_HIST_TABLE_NAME, null, cv)
     }
 
     fun readStretchData(): MutableList<Stretch> {
@@ -101,6 +125,27 @@ class StretchDataBaseHandler(val context: Context) : SQLiteOpenHelper(
         return list
     }
 
+    fun readStretchHistoryData(id: Int): MutableList<Long> {
+        val list: MutableList<Long> = ArrayList()
+
+        val db = this.readableDatabase
+        val query = "SELECT * FROM $ST_HIST_TABLE_NAME WHERE $ST_HIST_COL_EX_ID = $id"
+        val result = db.rawQuery(query, null)
+        val count = result.count
+
+        if (count > 0 && result.moveToFirst()) {
+            do {
+                list.add(result.getString(result.getColumnIndex(ST_HIST_COL_SECONDS)).toLong())
+
+            } while (result.moveToNext())
+        }
+
+        result.close()
+        db.close()
+        return list
+    }
+
+
     fun updateStretchData(stretch: Stretch): Boolean {
 
         val db = this.writableDatabase
@@ -121,12 +166,29 @@ class StretchDataBaseHandler(val context: Context) : SQLiteOpenHelper(
         return Integer.parseInt("$_success") != -1
     }
 
+    fun updateStretchGoal(id: Int, start: Long, goal: Long): Boolean{
+        val db = this.writableDatabase
+        val cv = ContentValues()
+
+        cv.put(ST_COL_SECONDS_START, start)
+        cv.put(ST_COL_SECONDS_GOAL, goal)
+
+        val whereClause = "$ST_COL_ID=?"
+        val whereArgs = arrayOf(id.toString())
+
+        val _success = db.update(ST_TABLE_NAME, cv, whereClause, whereArgs)
+        db.close()
+
+        return Integer.parseInt("$_success") != -1
+
+    }
+
     fun deleteStretchData(name: String): Int {
         val db = this.writableDatabase
         val result = db.delete(ST_TABLE_NAME, "$ST_COL_NAME=?", arrayOf(name))
-        if (result >= 1) {
-            Toast.makeText(context, "DB Success", Toast.LENGTH_SHORT).show()
-        } else Toast.makeText(context, "DB Failed", Toast.LENGTH_SHORT).show()
+//        if (result >= 1) {
+//            Toast.makeText(context, "DB Success", Toast.LENGTH_SHORT).show()
+//        } else Toast.makeText(context, "DB Failed", Toast.LENGTH_SHORT).show()
         db.close()
         return result
     }
