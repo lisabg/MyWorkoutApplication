@@ -19,30 +19,31 @@
             android:id="@+id/dashboard_stretching_button"
             android:layout_width="126dp"
             android:layout_height="127dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginTop="60dp"
             android:backgroundTint="@color/colorPrimaryWhite"
             android:contentDescription="@string/dashboard_stretching_button_description"
             android:scaleType="fitCenter"
             android:src="@drawable/stretching_icon"
             android:text="@string/converter_title"
-            app:layout_constraintBottom_toTopOf="@+id/textView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/dashboard_main" />
 
     <ImageButton
             android:id="@+id/dashboard_exercises_button"
             android:layout_width="126dp"
             android:layout_height="127dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginTop="8dp"
             android:backgroundTint="@color/colorPrimaryWhite"
             android:contentDescription="@string/dashboard_exercise_button_description"
             android:scaleType="fitCenter"
             android:src="@drawable/exercise2_icon"
             android:text="@string/converter_title"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 
     <ImageButton
@@ -62,21 +63,22 @@
     <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:textColor="@color/colorAccent"
+            android:layout_height="19dp"
+            android:layout_marginTop="4dp"
             android:text="@string/stretch_title"
-            app:layout_constraintBottom_toTopOf="@+id/dashboard_exercises_button"
+            android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dashboard_stretching_button" />
 
     <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="@color/colorAccent"
             android:text="@string/exercise_title"
+            android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dashboard_exercises_button" />
@@ -86,8 +88,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="@color/colorAccent"
             android:text="@string/converter_title"
+            android:textColor="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dashboard_converter_button" />
@@ -99,8 +101,8 @@
             android:layout_marginStart="5dp"
             android:layout_marginBottom="6dp"
             android:backgroundTint="@color/colorAccent"
-            android:textColor="@color/colorPrimaryWhite"
             android:text="@string/dashboard_privacy_button_text"
+            android:textColor="@color/colorPrimaryWhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
