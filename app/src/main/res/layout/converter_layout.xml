@@ -61,7 +61,7 @@
 
 
         <Spinner
-                android:id="@+id/converter_spinner_to"
+                android:id="@+id/converter_spinner_from"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="27sp"
@@ -80,7 +80,7 @@
                 tools:layout_editor_absoluteY="265dp" />
 
         <Spinner
-                android:id="@+id/converter_spinner_from"
+                android:id="@+id/converter_spinner_to"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="27sp"
