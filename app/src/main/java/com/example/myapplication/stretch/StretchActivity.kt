@@ -68,11 +68,11 @@ class StretchActivity : AppCompatActivity() {
 
         addNewStretchFunctionality(stretchData, db)
 
-        val itemTouchHelper = ItemTouchHelper(swipeFunctionality(db, stretchData))
+        val itemTouchHelper = ItemTouchHelper(swipeFunctionality(db))
         itemTouchHelper.attachToRecyclerView(recycler_view_stretches)
     }
 
-    private fun swipeFunctionality(db: StretchDataBaseHandler, data: ArrayList<Stretch>): ItemTouchHelper.SimpleCallback {
+    private fun swipeFunctionality(db: StretchDataBaseHandler): ItemTouchHelper.SimpleCallback {
 
         itemTouchHelperCallBack =
             object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {

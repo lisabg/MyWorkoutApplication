@@ -26,5 +26,9 @@ class DashboardActivity : AppCompatActivity() {
         dashboard_converter_button.setOnClickListener {
             startActivity(Intent(this@DashboardActivity, ConverterActivity::class.java))
         }
+
+        dashboard_privacy_button.setOnClickListener {
+            startActivity(Intent(this@DashboardActivity, PrivacyActivity::class.java))
+        }
     }
 }

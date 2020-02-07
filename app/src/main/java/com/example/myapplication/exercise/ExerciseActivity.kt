@@ -61,12 +61,12 @@ class ExerciseActivity : AppCompatActivity() {
 
         addNewExerciseFunctionality(exerciseData, db)
 
-        val itemTouchHelper = ItemTouchHelper(swipeFunctionality(db, exerciseData))
+        val itemTouchHelper = ItemTouchHelper(swipeFunctionality(db))
         itemTouchHelper.attachToRecyclerView(recycler_view_exercises)
 
     }
 
-    private fun swipeFunctionality(db: ExerciseDataBaseHandler, data: ArrayList<Exercise>): ItemTouchHelper.SimpleCallback {
+    private fun swipeFunctionality(db: ExerciseDataBaseHandler): ItemTouchHelper.SimpleCallback {
 
         itemTouchHelperCallBack =
             object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {

@@ -159,7 +159,7 @@ class ExerciseDetailsActivity : AppCompatActivity() {
             details_progress_percentage.text = "0%"
         }
         else {
-            val percentage = calculateProgress(start!!.toLong(), weight.toLong(), goal.toLong())
+            val percentage = calculateProgress(start.toLong(), weight.toLong(), goal.toLong())
             details_progress_bar.progress = percentage
             details_progress_percentage.text = getString(R.string.percentage_text, percentage)
         }

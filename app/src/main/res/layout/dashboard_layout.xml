@@ -33,6 +33,7 @@
             android:id="@+id/dashboard_exercises_button"
             android:layout_width="126dp"
             android:layout_height="127dp"
+            android:layout_marginBottom="32dp"
             android:backgroundTint="@color/colorPrimaryWhite"
             android:contentDescription="@string/dashboard_exercise_button_description"
             android:scaleType="fitCenter"
@@ -63,6 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:textColor="@color/colorAccent"
             android:text="@string/stretch_title"
             app:layout_constraintBottom_toTopOf="@+id/dashboard_exercises_button"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,6 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:textColor="@color/colorAccent"
             android:text="@string/exercise_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,10 +86,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:textColor="@color/colorAccent"
             android:text="@string/converter_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dashboard_converter_button" />
+
+    <Button
+            android:id="@+id/dashboard_privacy_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="6dp"
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@color/colorPrimaryWhite"
+            android:text="@string/dashboard_privacy_button_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

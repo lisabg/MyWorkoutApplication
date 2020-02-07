@@ -7,8 +7,8 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.example.myapplication"
-        minSdkVersion 23
+        applicationId 'dev.greenquist.myapplication'
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -37,6 +37,10 @@ androidExtensions {
 }
 
 dependencies {
+    def core_version = "1.2.0"
+    def lifecycle_version = "2.2.0"
+    def daggerVersion = '2.26'
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -45,16 +49,14 @@ dependencies {
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha01'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.12'
+    implementation "androidx.core:core-ktx:$core_version"
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     //implementation 'com.google.android.material:material:1.0.0'
-
-    def lifecycle_version = "2.2.0"
-    def daggerVersion = "2.5"
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"     // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    // ViewModel and LiveData
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-
 
 }
