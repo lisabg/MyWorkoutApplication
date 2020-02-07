@@ -91,10 +91,9 @@ class ConverterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
         val num = number.toDoubleOrNull()
         if (num !== null) {
             return when (converter_spinner_from.selectedItem.toString()) {
-                "kg" -> convertFromKg(num)
-                "g" -> convertFromG(num)
-                "lb" -> convertFromLb(num)
-                "oz" -> convertFromOz(num)
+                getString(R.string.kg) -> convertFromKg(num)
+                getString(R.string.g) -> convertFromG(num)
+                getString(R.string.lbs) -> convertFromLb(num)
                 else -> 0.0
             }
 
@@ -104,40 +103,27 @@ class ConverterActivity : AppCompatActivity(), AdapterView.OnItemSelectedListene
 
     private fun convertFromKg(num: Double): Double {
         return when (converter_spinner_to.selectedItem.toString()) {
-            "kg" -> num
-            "g" -> num / 1000
-            "lb" -> num / 0.45359237
-            "oz" -> num / 0.02834952
+            getString(R.string.kg) -> num
+            getString(R.string.g) -> num * 1000
+            getString(R.string.lbs) -> num / 0.45359237
             else -> 0.0
         }
     }
 
     private fun convertFromG(num: Double): Double {
         return when (converter_spinner_to.selectedItem.toString()) {
-            "kg" -> num * 1000
-            "g" -> num
-            "lb" -> num * 2.2046226218
-            "oz" -> num / 453.59237
+            getString(R.string.kg) -> num / 1000
+            getString(R.string.g) -> num
+            getString(R.string.lbs) -> num / 453.59237
             else -> 0.0
         }
     }
 
     private fun convertFromLb(num: Double): Double {
         return when (converter_spinner_to.selectedItem.toString()) {
-            "kg" -> num * 0.45359237
-            "g" -> num * 453.59237
-            "lb" -> num
-            "oz" -> num * 16
-            else -> 0.0
-        }
-    }
-
-    private fun convertFromOz(num: Double): Double {
-        return when (converter_spinner_to.selectedItem.toString()) {
-            "kg" -> num * 0.02834952
-            "g" -> num * 28.34952
-            "lb" -> num / 16
-            "oz" -> num
+            getString(R.string.kg) -> num * 0.45359237
+            getString(R.string.g) -> num * 453.59237
+            getString(R.string.lbs) -> num
             else -> 0.0
         }
     }

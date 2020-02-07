@@ -16,14 +16,19 @@
     <string name="converter_convert_button">Convert</string>
     <string name="converter_from_type">From:</string>
     <string name="converter_to_type">To:</string>
+
+    <string name="kg">kg</string>
+    <string name="g">g</string>
+    <string name="lbs">lbs</string>
+
     <string name="converter_result">Result:</string>
     <string-array name="converter_options">
         <item>units</item>
         <item>kg</item>
         <item>g</item>
-        <item>lb</item>
-        <item>oz</item>
+        <item>lbs</item>
     </string-array>
+
 
     <string name="percentage_text">%1$d%%</string>
     <string name="name_text">Name: %1$s</string>
