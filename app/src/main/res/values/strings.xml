@@ -70,11 +70,9 @@
     <string name="dashboard_privacy_button_text">Privacy</string>
     <string name="privacy_policy_title_text">Privacy Policy</string>
     <string name="privacy_policy_body_text">
-        We don\'t store your data, period.\n\nFor more information please see PawTime\'s online statement:
+        We don\'t store your data, period.\n\nFor more information please see Greenquist_Dev\'s online statement:
     </string>
-    <string name="privacy_url">
-        <a href="https://docs.google.com/document/d/150AFDbB-cVmNMVHCBEZW364hm9zdLckV2gjIBZAHDyo/edit?usp=sharing">CLICK HERE</a>
-    </string>
+    <string name="privacy_url">https://sites.google.com/view/greenquistdev-pp-simple/home</string>
 
     <string name="disclaimer_title_text">Disclaimer</string>
     <string name="disclaimer_body_text">
