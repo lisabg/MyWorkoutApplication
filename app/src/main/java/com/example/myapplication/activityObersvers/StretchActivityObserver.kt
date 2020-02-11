@@ -9,6 +9,8 @@ class StretchActivityObserver : LifecycleObserver {
 
     private val TAG = javaClass.simpleName
 
+    //testing
+
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     public fun onCreateEvent() {
         Log.i(TAG, "Observer ON_CREATE")
